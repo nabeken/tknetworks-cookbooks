@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "conflicting": {
+  },
+  "description": "Installs/Configures quagga",
+  "providing": {
+  },
+  "recipes": {
+  },
+  "attributes": {
+  },
+  "maintainer": "TKNetworks",
+  "replacing": {
+  },
+  "dependencies": {
+  },
+  "platforms": {
+  },
+  "maintainer_email": "nabeken@tknetworks.org",
+  "groupings": {
+  },
+  "recommendations": {
+  },
+  "license": "All rights reserved",
+  "name": "quagga",
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "suggestions": {
+  }
+}

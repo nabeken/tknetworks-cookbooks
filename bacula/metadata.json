@@ -1,0 +1,29 @@
+{
+  "version": "0.1.0",
+  "conflicting": {
+  },
+  "description": "Installs/Configures bacula",
+  "providing": {
+  },
+  "recipes": {
+  },
+  "attributes": {
+  },
+  "maintainer": "Example Com",
+  "replacing": {
+  },
+  "dependencies": {
+  },
+  "platforms": {
+  },
+  "maintainer_email": "ops@example.com",
+  "groupings": {
+  },
+  "recommendations": {
+  },
+  "license": "Apache 2.0",
+  "name": "bacula",
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+  "suggestions": {
+  }
+}

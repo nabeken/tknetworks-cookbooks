@@ -1,0 +1,3 @@
+<% @servers.each do |server| %>
+from="<%= server %>",no-port-forwarding,no-X11-forwarding,no-pty <%= @authorized_key %>
+<% end %>
