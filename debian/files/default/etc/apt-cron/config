@@ -1,0 +1,160 @@
+# Configuration for cron-apt.
+# The cron config is located in /etc/cron.d/cron-apt
+# This shows the defaults.
+#
+
+# The command used to execute all actions.  By default, apt-get is used.
+# Change this to /usr/bin/aptitude to use aptitude instead, which will
+# resolve changed Recommends (and Suggests as well, if aptitude is so
+# configured). You can also set other utilities (especially useful in the
+# config.d directory) so set some completely different tool.
+# OBSERVE that this tool is indended for apt-get and tools like aptitude do not
+# have full support for noninteractive upgrades. You may have to tune options
+# to not create infinit logfiles for example.
+# APTCOMMAND=/usr/bin/apt-get
+# APTCOMMAND=/usr/bin/aptitude
+# APTCOMMAND=/usr/bin/apt-file
+
+# A path is needed for this to work. This is the default PATH.
+# export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
+# The random sleep time in seconds. This is used to prevent clients from
+# accessing the APT sources all at the same time and overwhelming them.
+# Default is 3600 seconds which means one hour.
+# RUNSLEEP=3600
+
+# The minimum amount of disc space (in kB) that need to exist on the
+# device where temporary files are created (mktemp) to allow cron-apt
+# to run. If set to 0 it will always continue even if empty.
+# MINTMPDIRSIZE=10
+
+# The directory where the actions is stored.
+# ACTIONDIR="/etc/cron-apt/action.d"
+
+# The directory where configuration per action is stored. The message file
+# must have the same name as the action file.
+# ACTIONCONFDIR="/etc/cron-apt/config.d"
+
+# The directory where messages that will be prepended to the email that is
+# sent (per action) is stored. The message file must have the same name as
+# the action file.
+# MAILMSGDIR="/etc/cron-apt/mailmsg.d"
+
+# The directory where messages that will be prepended to text that is
+# sent (per action) to syslog. The message file must have the same name as
+# the action file.
+# SYSLOGMSGDIR="/etc/cron-apt/syslogmsg.d"
+
+# The directory where messages that will be prepended to the error message
+# (per action) is stored. The message file must have the same name as
+# the action file.
+# ERRORMSGDIR="/etc/cron-apt/errormsg.d"
+
+# The directory where messages that will be prepended to the log (debug)
+# message (per action) is stored. The message file must have the same name as
+# the action file.
+# LOGMSGDIR="/etc/cron-apt/logmsg.d"
+
+# The directory where messages that will be prepended to the mail message
+# (per MAILON type) is stored. The message file must have the same name as
+# the $MAILON directive.
+# MAILONMSGSDIR="/etc/cron-apt/mailonmsgs"
+
+# The directory where messages that will be prepended to the syslog message
+# (per SYSLOGON type) is stored. The message file must have the same name as
+# the $SYSLOGON directive.
+# SYSLOGONMSGSDIR="/etc/cron-apt/syslogonmsgs"
+
+# Value: ""       (warn if dotlockfile not installed)
+#        "nowarn" (don't give warning if dotlockfile not installed)
+# NOLOCKWARN=""
+
+# The file that contains error messages.
+# ERROR="/var/log/cron-apt/error"
+
+# The file that contains current run information
+# when still running the script.
+# TEMP="/var/log/cron-apt/temp"
+
+# The logfile (for debugging). Use syslog for normal logging.
+# LOG="/var/log/cron-apt/log"
+
+# The mail file.
+# MAIL="/var/log/cron-apt/mail"
+
+# The email address to send mail to.
+MAILTO="root"
+
+# When to send email about the cron-apt results.
+# Value: error   (send mail on error runs)
+#	 upgrade (when packages are upgraded)
+#	 changes (mail when change in output from an action)
+#	 output  (send mail when output is generated)
+#        always  (always send mail)
+#                (else never send mail)
+MAILON="upgrade"
+
+# Value: error   (syslog on error runs)
+#	 upgrade (when packages is upgraded)
+#	 changes (syslog when change in output from an action)
+#	 output  (syslog when output is generated)
+#        always  (always syslog)
+#                (else never syslog)
+SYSLOGON="always"
+
+# Value: error   (exit on error only)
+#                (else never exit)
+# EXITON="error"
+
+# Value: verbose (log everything)
+#        always  (always log)
+#	 upgrade (when packages is upgraded)
+#	 changes (log when change in output from an action)
+#	 output  (log when output is generated)
+#        error   (log error runs only)
+#                (else log nothing)
+# DEBUG="output"
+
+# What to do with the diff when *ON=changes.
+# Value: prepend (prepend to the output)
+#        append  (append to the output)
+#	 only	 (only show the diff, not the output itself)
+#                (else do nothing)
+# DIFFONCHANGES=prepend
+
+# General apt options that will be passed to all APTCOMMAND calls.
+# Use "-o quiet" instead of "-q" for aptitude compatibility.
+#  OPTIONS="-o quiet=1"
+# You can for example add an alternative sources.list file here.
+#  OPTIONS="-o quiet=1 -o Dir::Etc::SourceList=/etc/apt/security.sources.list"
+# If you want to allow unauthenticated and untrusted packages add the
+# following to your options directive.
+#  OPTIONS="-o quiet=1 -o APT::Get::AllowUnauthenticated=true -o aptitude::Cmdline::ignore-trust-violations=yes"
+
+# additional APT configuration file that is loaded first. This can be set in
+# order to use a completely different APT configuration for cron-apt. See the
+# /usr/share/doc/cron-apt/README and apt.conf(5) for details
+# export APT_CONFIG=/etc/apt/cron.apt.paths
+
+# Do not run the command, if there is an error in the previous run (default).
+# Value: error   (do not run if there is an error on last run)
+#                (else always run, remove previous error file and run)
+# DONTRUN=""
+
+# If this file exist cron-apt will silently exit.
+# REFRAINFILE=/etc/cron-apt/refrain
+
+# If this is non-empty, it will be used as the host name in subjects of
+# generated e-mail messages. If this is empty, the output of uname -n
+# will be used.
+# HOSTNAME=""
+
+# Ignore lines matching this regexp to determine whether changes occurred
+# for MAILON="changes". If empty no lines will be ignored.
+# Suggested value for aptitude:
+#  DIFFIGNORE="^\(Get:[[:digit:]]\+\|Hit\|Ign\|Del\|Fetched\|Freed\|Reading\)[[:space:]]"
+
+# Suggested value for apt-get:
+#  DIFFIGNORE="^\(Get:[[:digit:]]\+\|Hit\|Ign\)[[:space:]]"
+# Default:
+#  DIFFIGNORE=""

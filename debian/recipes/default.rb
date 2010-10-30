@@ -21,3 +21,14 @@ end
 file "/etc/cron.daily/find" do
     mode 0444
 end
+
+package "cron-apt" do
+    action :install
+end
+
+cookbook_file "/etc/cron-apt/config" do
+    source "etc/cron-apt/config"
+    owner "root"
+    group "root"
+    mode  0644
+end
