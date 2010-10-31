@@ -18,9 +18,14 @@ package "app-portage/layman" do
     action :install
 end
 
-unless File.exist?("/etc/make.conf.local")
-    Chef::Log.info("touching /etc/make.conf.local")
-    FileUtils.touch("/etc/make.conf.local")
+%w{
+    /etc/make.conf.local
+    /var/lib/layman/make.conf
+}.each do |f|
+    unless File.exist?(f)
+        Chef::Log.info("touching #{f}")
+        FileUtils.touch(f)
+    end
 end
 
 config = {
