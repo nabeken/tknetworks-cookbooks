@@ -5,12 +5,22 @@
 
 return if node.platform != "gentoo"
 
+require "fileutils"
 extend Chef::Gentoo
 
 arch = getKeywords(node)
 
 link "/etc/make.profile" do
     to "/usr/portage/profiles/default/linux/#{arch}/#{node.gentoo.release}/#{node.gentoo.profile}"
+end
+
+package "app-portage/layman" do
+    action :install
+end
+
+unless File.exist?("/etc/make.conf.local")
+    Chef::Log.info("touching /etc/make.conf.local")
+    FileUtils.touch("/etc/make.conf.local")
 end
 
 config = {
