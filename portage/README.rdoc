@@ -19,6 +19,12 @@
         end
         
         portage "mail-mta/postfix" do
-            use_enable  ['dovecot-sasl']
-            use_disable ['mysql', 'sasl']
+            use_enable  %w{
+                dovecot-sasl
+            }
+
+            use_disable %w{
+                mysql
+                sasl
+            }
         end
