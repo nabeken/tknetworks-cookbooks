@@ -1,0 +1,3 @@
+<% @keywords.each do |keyword| %>
+<%= keyword %>
+<% end %>

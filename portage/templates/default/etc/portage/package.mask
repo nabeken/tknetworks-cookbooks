@@ -1,0 +1,3 @@
+<% @mask.each do |name| %>
+<%= name %>
+<% end %>

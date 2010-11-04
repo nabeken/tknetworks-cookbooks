@@ -1,0 +1,1 @@
+default[:portage] = Mash.new

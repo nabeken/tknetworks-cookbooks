@@ -1,0 +1,24 @@
+= DESCRIPTION:
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+
+= USAGE:
+
+        portage "app-shells/zsh" do
+            keyword "x86"
+        end
+        
+        portage "app-backup/bacula" do
+            mask '>=3.0'
+        end
+        
+        portage "app-backup/bacula" do
+            unmask '>=3.0'
+        end
+        
+        portage "mail-mta/postfix" do
+            use_enable  ['dovecot-sasl']
+            use_disable ['mysql', 'sasl']
+        end
