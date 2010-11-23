@@ -23,7 +23,7 @@
   },
   "license": "Apache 2.0",
   "name": "portage",
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n        portage \"app-shells/zsh\" do\n            keyword \"x86\"\n        end\n        \n        portage \"app-backup/bacula\" do\n            mask '>=3.0'\n        end\n        \n        portage \"app-backup/bacula\" do\n            unmask '>=3.0'\n        end\n        \n        portage \"mail-mta/postfix\" do\n            use_enable  ['dovecot-sasl']\n            use_disable ['mysql', 'sasl']\n        end\n",
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n        portage \"app-shells/zsh\" do\n            keyword \"x86\"\n        end\n        \n        portage \"app-backup/bacula\" do\n            mask '>=3.0'\n        end\n        \n        portage \"app-backup/bacula\" do\n            unmask '>=3.0'\n        end\n        \n        portage \"mail-mta/postfix\" do\n            use_enable  %w{\n                dovecot-sasl\n            }\n\n            use_disable %w{\n                mysql\n                sasl\n            }\n        end\n",
   "suggestions": {
   }
 }

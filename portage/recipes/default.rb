@@ -1,14 +1,22 @@
-# initialize template resources
-[:mask, :unmask, :use, :keywords].each do |t|
-    var = case t
-         when :use
-             {}
-         else
-             []
-         end
+package "app-text/lv" do
+  action :install
+end
 
-    template "/etc/portage/package.#{t}" do 
-        source "etc/portage/package.#{t}"
-        variables t => var
-    end
+#portage_keywords "app-text/lv" do
+#  keyword "~amd64"
+#  action :delete
+#  notifies :reinstall, resources(:package => "app-text/lv")
+#end
+
+#portage_unmask "app-text/lv" do
+#  versions %w(=9999 =8888)
+#  action :delete
+#  notifies :reinstall, resources(:package => "app-text/lv")
+#end
+
+portage_use "app-text/lv" do
+  enable  %w(cjk hoge xxx)
+  disable %w(xxxx yyyy zzzz)
+  action :delete
+  notifies :reinstall, resources(:package => "app-text/lv")
 end
