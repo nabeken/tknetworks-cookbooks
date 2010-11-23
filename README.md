@@ -14,6 +14,6 @@ COOKBOOKS
  * nagios
  * node
  * openvpn
- * portage
+ * portage (coming soon)
  * quagga
  * unbound
