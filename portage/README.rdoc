@@ -6,25 +6,27 @@
 
 = USAGE:
 
-        portage "app-shells/zsh" do
-            keyword "x86"
-        end
-        
-        portage "app-backup/bacula" do
-            mask '>=3.0'
-        end
-        
-        portage "app-backup/bacula" do
-            unmask '>=3.0'
-        end
-        
-        portage "mail-mta/postfix" do
-            use_enable  %w{
-                dovecot-sasl
-            }
-
-            use_disable %w{
-                mysql
-                sasl
-            }
-        end
+	package "www-servers/apache" do
+	  action :install
+	end
+	
+	portage_use "www-servers/apache" do
+	  enable %w(suexec ssl)
+	  disable %w(ldap debug doc)
+	  notifies :reinstall, resources(:package => "www-servers/apache")
+	end
+	
+	portage_mask "www-servers/apache" do
+	  versions %w(<2.0 >3.0)
+	  notifies :reinstall, resources(:package => "www-servers/apache")
+	end
+	
+	portage_unmask "www-servers/apache" do
+	  versions %w(<2.0 >3.0)
+	  notifies :reinstall, resources(:package => "www-servers/apache")
+	end
+	
+	portage_keywords "www-servers/apache" do
+	  keyword "~amd64"
+	  notifies :reinstall, resources(:package => "www-servers/apache")
+	end
