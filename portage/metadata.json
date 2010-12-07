@@ -1,29 +1,29 @@
 {
   "version": "0.0.1",
-  "conflicting": {
+  "maintainer": "TKNetworks",
+  "replacing": {
   },
   "description": "Installs/Configures portage",
-  "providing": {
-  },
-  "recipes": {
+  "maintainer_email": "nabeken@tknetworks.org",
+  "groupings": {
   },
   "attributes": {
   },
-  "maintainer": "TKNetworks",
-  "replacing": {
+  "recommendations": {
+  },
+  "recipes": {
   },
   "dependencies": {
   },
   "platforms": {
   },
-  "maintainer_email": "nabeken@tknetworks.org",
-  "groupings": {
+  "suggestions": {
   },
-  "recommendations": {
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n\tpackage \"www-servers/apache\" do\n\t  action :install\n\tend\n\t\n\tportage_use \"www-servers/apache\" do\n\t  enable %w(suexec ssl)\n\t  disable %w(ldap debug doc)\n\t  notifies :reinstall, resources(:package => \"www-servers/apache\")\n\tend\n\t\n\tportage_mask \"www-servers/apache\" do\n\t  versions %w(<2.0 >3.0)\n\t  notifies :reinstall, resources(:package => \"www-servers/apache\")\n\tend\n\t\n\tportage_unmask \"www-servers/apache\" do\n\t  versions %w(<2.0 >3.0)\n\t  notifies :reinstall, resources(:package => \"www-servers/apache\")\n\tend\n\t\n\tportage_keywords \"www-servers/apache\" do\n\t  keyword \"~amd64\"\n\t  notifies :reinstall, resources(:package => \"www-servers/apache\")\n\tend\n",
+  "conflicting": {
   },
   "license": "Apache 2.0",
   "name": "portage",
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n        portage \"app-shells/zsh\" do\n            keyword \"x86\"\n        end\n        \n        portage \"app-backup/bacula\" do\n            mask '>=3.0'\n        end\n        \n        portage \"app-backup/bacula\" do\n            unmask '>=3.0'\n        end\n        \n        portage \"mail-mta/postfix\" do\n            use_enable  %w{\n                dovecot-sasl\n            }\n\n            use_disable %w{\n                mysql\n                sasl\n            }\n        end\n",
-  "suggestions": {
+  "providing": {
   }
 }
