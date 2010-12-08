@@ -14,13 +14,13 @@ link "/etc/make.profile" do
     to "/usr/portage/profiles/default/linux/#{arch}/#{node.gentoo.release}/#{node.gentoo.profile}"
 end
 
+package "app-portage/layman" do
+    action :install
+end
+
 portage_use "app-portage/layman" do
     enable %w(cvs git subversion)
     notifies :reinstall, resources(:package => "app-portage/layman")
-end
-
-package "app-portage/layman" do
-    action :install
 end
 
 %w{
