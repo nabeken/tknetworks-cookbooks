@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "maintainer": "TKNetworks",
+  "replacing": {
+  },
+  "description": "Installs/Configures ntp",
+  "maintainer_email": "nabeken@tknetworks.org",
+  "groupings": {
+  },
+  "attributes": {
+  },
+  "recommendations": {
+  },
+  "recipes": {
+  },
+  "dependencies": {
+  },
+  "platforms": {
+  },
+  "suggestions": {
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "conflicting": {
+  },
+  "license": "",
+  "name": "ntp",
+  "providing": {
+  }
+}
