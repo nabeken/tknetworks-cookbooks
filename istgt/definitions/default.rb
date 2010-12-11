@@ -8,11 +8,11 @@ define :istgt_portal, :addresses => nil do
 end
 
 # name => InitiatorGroup1
-define :istgt_initiator, :initiator_name => nil do
+define :istgt_initiator, :initiators => nil do
   raise if params[:initiator_name].nil?
   t = resources(:template => "/usr/local/etc/istgt/istgt.conf")
   t.variables[:initiators][params[:name]] = Mash.new if t.variables[:initiators][params[:name]].nil?
-  t.variables[:initiators][params[:name]][:initiator_name] = params[:initiator_name]
+  t.variables[:initiators][params[:name]][:initiators] = params[:initiators]
 end
 
 # name => LogicalUnit1
