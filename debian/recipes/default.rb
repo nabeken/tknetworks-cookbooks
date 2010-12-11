@@ -1,4 +1,4 @@
-return if platform != "debian"
+return if node.platform != "debian"
 
 debian_aptline "security" do
     url  "http://security.debian.org/"
@@ -12,7 +12,7 @@ debian_aptline "base" do
 end
 
 # opscode's cool repos
-debian_aptline "opscode"
+debian_aptline "opscode" do
     url  "http://apt.opscode.com"
     repo %w{main}
 end

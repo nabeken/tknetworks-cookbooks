@@ -1,4 +1,4 @@
 <% @aptlines.each do |aptline| %>
-deb <%= aptlilne[:url] %> <%= @release %><%= aptline[:path] %> <%= aptline[:repo].join(" ") %>
-deb-src <%= uri %> <%= @release %><%= aptline[:path] %> <%= aptline[:repo].join(" ") %>
+deb <%= aptline[:url] %> <%= @release %><%= aptline[:path] %> <%= aptline[:repo].join(" ") %>
+deb-src <%= aptline[:uri] %> <%= @release %><%= aptline[:path] %> <%= aptline[:repo].join(" ") %>
 <% end %>
