@@ -9,7 +9,7 @@ end
 
 # name => InitiatorGroup1
 define :istgt_initiator, :initiators => nil do
-  raise if params[:initiator_name].nil?
+  raise if params[:initiators].nil?
   t = resources(:template => "/usr/local/etc/istgt/istgt.conf")
   t.variables[:initiators][params[:name]] = Mash.new if t.variables[:initiators][params[:name]].nil?
   t.variables[:initiators][params[:name]][:initiators] = params[:initiators]
