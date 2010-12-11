@@ -24,6 +24,19 @@ end
     end
 end
 
+if node.platform != "gentoo"
+  directory "/etc/dnssec" do
+    action :create
+  end
+  cookbook_file "/etc/dnssec/root-anchors.txt" do
+    source "etc/dnssec/root-anchors.txt"
+    owner "root"
+    group "root"
+    mode  0644
+    notifies :restart, resources(:service => node.unbound.service)
+  end
+end
+
 template node.unbound.config.file do
     source "etc/unbound/unbound.conf"
     mode 0644
