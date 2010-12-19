@@ -7,6 +7,10 @@
 
 return if node.platform != "freebsd"
 
+directory "/usr/local/etc/istgt" do
+  action :create
+end
+
 package "istgt" do
   source "ports"
   action :install
@@ -15,6 +19,7 @@ end
 service "istgt" do
   action :enable
 end
+
 
 template "/usr/local/etc/istgt/istgt.conf" do
   action :nothing
