@@ -1,4 +1,6 @@
 apache2 = "apache2"
+cronolog = "cronolog"
+
 default[:apache2][:config][:dir] = "/etc/apache2"
 default[:apache2][:service] = "apache2"
 default[:apache2][:use_cronolog] = true
@@ -10,6 +12,8 @@ default[:apache2][:gid]   = "apache"
 case platform
 when "gentoo"
     apache2 = "www-servers/apache"
+    cronolog = "app-admin/cronolog"
 end
 
 default[:apache2][:package] = apache2
+default[:apache2][:cronolog] = cronolog

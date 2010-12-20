@@ -21,7 +21,11 @@ service node.apache2.service do
   action :enable
 end
 
-#include_recipe "cronolog"
+if node.apache2.use_cronolog
+  package node.apache2.cronolog do
+    action :install
+  end
+end
 
 # setting /etc/apache2 or /etc/httpd....
 include_recipe "apache2::#{node.hostname}"
