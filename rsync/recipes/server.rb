@@ -9,5 +9,5 @@ rescue ArgumentError
 end
 
 service node.rsync.server.service do
-  action :start
+  action :restart
 end
