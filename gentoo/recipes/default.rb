@@ -34,17 +34,18 @@ end
 end
 
 config = {
-    :use      => node.gentoo.default_use,
-    :keywords => getKeywords(node),
-    :chost    => getChost(node),
-    :cflags   => getCflags(node),
-    :makeopts => getMakeopts(node),
-    :portdir  => "/usr/portage",
-    :features => node.gentoo.features,
-    :mirrors  => getMirrors(node),
-    :sync     => getSync(node),
-    :linguas  => node.gentoo.linguas,
-    :license  => node.gentoo.license,
+    :use        => node.gentoo.default_use,
+    :keywords   => getKeywords(node),
+    :chost      => getChost(node),
+    :cflags     => getCflags(node),
+    :makeopts   => getMakeopts(node),
+    :portdir    => "/usr/portage",
+    :features   => node.gentoo.features,
+    :mirrors    => getMirrors(node),
+    :sync       => getSync(node),
+    :rsync_opts => node.gentoo.rsync_opts,
+    :linguas    => node.gentoo.linguas,
+    :license    => node.gentoo.license,
     :apache2_modules => node.gentoo.apache2_modules,
     :portdir_overlay => "/usr/local/portage"
 }
