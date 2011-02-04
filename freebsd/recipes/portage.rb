@@ -3,7 +3,7 @@ package "net/rsync" do
 end
 
 cron "portage_sync" do
-  command "/usr/local/bin/rsync rsync://rsync.jp.gentoo.org/gentoo-portage /srv/portage -aqP --delete"
+  command "/usr/local/bin/rsync rsync://ftp.nara.wide.ad.jp/gentoo-portage /srv/portage -aqP --delete"
   hour "*/4"
   minute 0
 end
