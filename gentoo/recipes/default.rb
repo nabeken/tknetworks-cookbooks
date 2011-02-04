@@ -29,6 +29,7 @@ end
 }.each do |f|
     unless File.exist?(f)
         Chef::Log.info("touching #{f}")
+        File.mkdir_p(File.dirname(f))
         FileUtils.touch(f)
     end
 end
