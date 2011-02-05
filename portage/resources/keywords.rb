@@ -1,4 +1,5 @@
-def initialize(*args) super(*args)
+def initialize(*args)
+  super(*args)
   @action = :create
 end
 
