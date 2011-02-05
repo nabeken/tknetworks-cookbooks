@@ -23,6 +23,11 @@ portage_use "app-portage/layman" do
     notifies :reinstall, resources(:package => "app-portage/layman")
 end
 
+# useful USE flags
+portage_use "dev-vcs/git" do
+  enable %w(subversion)
+end
+
 %w{
     /etc/make.conf.local
     /var/lib/layman/make.conf
