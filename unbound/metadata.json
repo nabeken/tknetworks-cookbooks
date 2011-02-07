@@ -1,29 +1,29 @@
 {
   "version": "0.0.1",
-  "maintainer": "TKNetworks",
-  "replacing": {
+  "conflicting": {
   },
   "description": "Installs/Configures unbound",
-  "maintainer_email": "nabeken@tknetworks.org",
-  "groupings": {
+  "providing": {
   },
+  "maintainer": "TKNetworks",
   "attributes": {
   },
-  "recommendations": {
-  },
-  "recipes": {
+  "replacing": {
   },
   "dependencies": {
   },
   "platforms": {
   },
-  "suggestions": {
+  "maintainer_email": "nabeken@tknetworks.org",
+  "groupings": {
   },
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
-  "conflicting": {
+  "recommendations": {
+  },
+  "recipes": {
   },
   "license": "Apache 2.0",
   "name": "unbound",
-  "providing": {
-  }
+  "suggestions": {
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n"
 }
