@@ -1,36 +1,40 @@
 # useは1パッケージ1つと仮定
 
 def load_current_resource
+  Chef::Log.info("load current resource for #{@new_resource.name}")
   @element = :use
   @filename = "/etc/portage/package.#{@element}"
   @current_resource = Chef::Resource::PortageUse.new(@new_resource.name)
   @use = {}
 
-  @new_resource.enable([]) if @new_resource.enable.nil?
+  # new_resourceで指定がなければ空
+  @new_resource.enable([])  if @new_resource.enable.nil?
   @new_resource.disable([]) if @new_resource.disable.nil?
 
+  # ファイルを開いて全パッケージ名とUSEフラグの対を生成しインスタンス変数 @use へ格納
   begin
     ::File.open(@filename).readlines.each do |l|
       pkg, args = l.strip.split(" ", 2)
       enabled  = getEnabledUse(args)
       disabled = getDisabledUse(args)
 
+      @use[pkg] = {}
+      @use[pkg][:enable]  = enabled
+      @use[pkg][:disable] = disabled
+
+      # 読み込み中のリソースがファイル中にあれば @current_resource へ @new_resource のフラグを足す
       if @new_resource.name == pkg
-        # use
+        enabled  += @new_resource.enable
+        disabled += @new_resource.disable
         @current_resource.enable(enabled)
-        # disable
         @current_resource.disable(disabled)
       end
-
-      @use[@new_resource.name] = {} if @use[@new_resource.name].nil?
-      @use[@new_resource.name][:enable]  = enabled
-      @use[@new_resource.name][:disable] = disabled
     end
   rescue
+    Chef::Log.info("can not load: #{@new_resource.name}")
     @current_resource.enable(nil)
     @current_resource.disable(nil)
   end
-
   @current_resource
 end
 
