@@ -10,7 +10,7 @@ class Chef
         ::File.open(@filename, 'w') do |f|
           @versions.each do |pkg, versions|
             versions.flatten.each do |version|
-              version =~ /^([><=]|>=|<=)(.*)/
+              version =~ /^(>=|<=|[><=])(.*)/
               f.print "#{$1}#{pkg}-#{$2}\n"
             end
           end
