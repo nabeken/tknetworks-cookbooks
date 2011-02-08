@@ -27,6 +27,9 @@ end
 portage_use "dev-vcs/git" do
   enable %w(subversion)
 end
+portage_use "dev-vcs/subversion" do
+  disable %w(dso)
+end
 portage_use "net-misc/ntp" do
   enable %w(cap)
 end
