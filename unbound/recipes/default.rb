@@ -11,6 +11,15 @@ package node.unbound.package do
     action :install
 end
 
+if node.platform == "gentoo"
+  portage_keywords node.unbound.package do
+    keyword "~amd64"
+  end
+  portage_keywords "net-libs/ldns" do
+    keyword "~amd64"
+  end
+end
+
 cookbook_file "/etc/named.root" do
     source "etc/named.root"
     mode 0644
@@ -18,10 +27,8 @@ cookbook_file "/etc/named.root" do
     group "root"
 end
 
-%w{enable start}.each do |act|
-    service node.unbound.service do
-        action act
-    end
+service node.unbound.service do
+    action :enable
 end
 
 if node.platform != "gentoo"
@@ -35,6 +42,10 @@ if node.platform != "gentoo"
     mode  0644
     notifies :restart, resources(:service => node.unbound.service)
   end
+else
+  package "net-dns/dnssec-root" do
+    action :install
+  end
 end
 
 template node.unbound.config.file do
@@ -42,11 +53,15 @@ template node.unbound.config.file do
     mode 0644
     owner "root"
     group "root"
-    variables :allow_list => node[:unbound][:config][:allow_list], 
+    variables :allow_list => node[:unbound][:config][:allow_list],
               :interfaces => node[:unbound][:config][:interfaces],
               :extended_statistics => node[:unbound][:config][:extended_statistics],
               :forward_zones => node[:unbound][:config][:forward_zones],
               :local_records => node[:unbound][:config][:local_records]
 
     notifies :restart, resources(:service => node.unbound.service)
+end
+
+service node.unbound.service do
+    action :start
 end

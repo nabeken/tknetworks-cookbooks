@@ -1,9 +1,9 @@
+config = "/etc/unbound/unbound.conf"
+unbound = "unbound"
+
 case platform
 when "gentoo"
     unbound = "net-dns/unbound"
-else
-    unbound = "unbound"
-    config = "/etc/unbound/unbound.conf"
 end
 
 default[:unbound][:package]  = unbound
