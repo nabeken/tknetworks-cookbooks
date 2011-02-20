@@ -14,8 +14,13 @@ link "/etc/make.profile" do
     to "/usr/portage/profiles/default/linux/#{arch}/#{node.gentoo.release}/#{node.gentoo.profile}"
 end
 
-package "app-portage/layman" do
-    action :install
+%w{
+  app-portage/layman
+  app-portage/eix
+}.each do |pkg|
+  package pkg do
+      action :install
+  end
 end
 
 portage_use "app-portage/layman" do
@@ -28,6 +33,7 @@ portage_use "dev-vcs/git" do
   enable %w(subversion)
 end
 portage_use "dev-vcs/subversion" do
+  enable  %w(apache2)
   disable %w(dso)
 end
 portage_use "net-misc/ntp" do
