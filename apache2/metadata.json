@@ -1,29 +1,29 @@
 {
   "version": "0.0.1",
+  "recipes": {
+  },
+  "suggestions": {
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "description": "Installs/Configures apache2",
   "conflicting": {
   },
-  "description": "Installs/Configures apache2",
-  "providing": {
-  },
-  "maintainer": "TKNetworks",
   "attributes": {
   },
-  "replacing": {
+  "providing": {
   },
   "dependencies": {
   },
   "platforms": {
   },
+  "maintainer": "TKNetworks",
+  "replacing": {
+  },
+  "license": "",
   "maintainer_email": "nabeken@tknetworks.org",
+  "name": "apache2",
   "groupings": {
   },
   "recommendations": {
-  },
-  "recipes": {
-  },
-  "license": "",
-  "name": "apache2",
-  "suggestions": {
-  },
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n"
+  }
 }

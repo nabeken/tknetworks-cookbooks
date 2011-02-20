@@ -17,6 +17,7 @@ end
 %w{
   app-portage/layman
   app-portage/eix
+  app-portage/gentoolkit
 }.each do |pkg|
   package pkg do
       action :install

@@ -1,29 +1,29 @@
 {
   "version": "0.0.1",
+  "recipes": {
+  },
+  "suggestions": {
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "description": "Installs/Configures ntp",
   "conflicting": {
   },
-  "description": "Installs/Configures ntp",
-  "providing": {
-  },
-  "maintainer": "TKNetworks",
   "attributes": {
   },
-  "replacing": {
+  "providing": {
   },
   "dependencies": {
   },
   "platforms": {
   },
+  "maintainer": "TKNetworks",
+  "replacing": {
+  },
+  "license": "",
   "maintainer_email": "nabeken@tknetworks.org",
+  "name": "ntp",
   "groupings": {
   },
   "recommendations": {
-  },
-  "recipes": {
-  },
-  "license": "",
-  "name": "ntp",
-  "suggestions": {
-  },
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n"
+  }
 }

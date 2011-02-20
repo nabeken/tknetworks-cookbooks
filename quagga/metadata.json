@@ -1,29 +1,29 @@
 {
   "version": "0.0.1",
+  "recipes": {
+  },
+  "suggestions": {
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "description": "Installs/Configures quagga",
   "conflicting": {
   },
-  "description": "Installs/Configures quagga",
-  "providing": {
-  },
-  "maintainer": "TKNetworks",
   "attributes": {
   },
-  "replacing": {
+  "providing": {
   },
   "dependencies": {
   },
   "platforms": {
   },
+  "maintainer": "TKNetworks",
+  "replacing": {
+  },
+  "license": "Apache 2.0",
   "maintainer_email": "nabeken@tknetworks.org",
+  "name": "quagga",
   "groupings": {
   },
   "recommendations": {
-  },
-  "recipes": {
-  },
-  "license": "Apache 2.0",
-  "name": "quagga",
-  "suggestions": {
-  },
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n"
+  }
 }

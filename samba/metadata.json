@@ -1,29 +1,29 @@
 {
   "version": "0.0.1",
+  "recipes": {
+  },
+  "suggestions": {
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "description": "Installs/Configures samba",
   "conflicting": {
   },
-  "description": "Installs/Configures samba",
-  "providing": {
-  },
-  "maintainer": "TKNetworks",
   "attributes": {
   },
-  "replacing": {
+  "providing": {
   },
   "dependencies": {
   },
   "platforms": {
   },
+  "maintainer": "TKNetworks",
+  "replacing": {
+  },
+  "license": "",
   "maintainer_email": "nabeken@tknetworks.org",
+  "name": "samba",
   "groupings": {
   },
   "recommendations": {
-  },
-  "recipes": {
-  },
-  "license": "",
-  "name": "samba",
-  "suggestions": {
-  },
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n"
+  }
 }
