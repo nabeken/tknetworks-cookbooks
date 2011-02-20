@@ -1,0 +1,18 @@
+kernel = "<%= @kernel %>"
+ramdisk = "<%= @ramdisk %>"
+memory = "<%= @memory %>"
+<% if @mac.nil? %>
+vif = [ bridge=<%= @bridge %>' ]
+<% else %>
+vif = [ 'mac=<%= @mac %>, bridge=<%= @bridge %>' ]
+<% end %>
+disk = [
+<% @disk.each do |d| %>
+'<%= d %>',
+<% end %>
+]
+name = '<%= @name %>'
+root = "<%= @root %>"
+extra = "<%= @extra %>"
+cpus = "<%= @cpus.join(",") %>"
+vcpus = "<%= @vcpus %>"
