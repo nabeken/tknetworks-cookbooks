@@ -38,7 +38,7 @@ end
     jobdefs.conf
 }.each do |f|
     template "#{node.bacula.dir.config_dir}/bacula-dir.conf.d/#{f}" do
-        source "etc/bacula/bacula-dir.conf.d/#{f}"
+        source "bacula-dir/#{f}"
         owner  node.bacula.uid
         group  node.bacula.gid
         mode   0644
@@ -63,7 +63,7 @@ search(:node, "role:bacula_fd") do |n|
 end
 
 # here, you can define clients manually via bacula_client()
-include_recipe "bacula::myclients"
+include_recipe "bacula::dir_myclients"
 
 # default restore job
 bacula_job "ResotreFiles" do
@@ -75,8 +75,13 @@ bacula_job "ResotreFiles" do
     where    "/bacula-restores"
 end
 
-# here, you have to define jobs manually via bacula_job()
-include_recipe "bacula::myjobs"
+node.bacula.dir.jobs.each do |name, config|
+    bacula_job name do
+        default  config[:default]
+        schedule config[:schedule]
+        storage  config[:storage]
+    end
+end
 
 # ready to startup
 #service node.bacula.dir.service do

@@ -3,6 +3,7 @@ include_attribute "bacula"
 default[:bacula][:dir][:port] = "9101"
 default[:bacula][:dir][:message] = "Daemon"
 default[:bacula][:dir][:enable_tls] = true
+default[:bacula][:dir][:jobs] = Mash.new
 
 config_dir = "/etc/bacula"
 query_file = "/usr/libexec/bacula/query.sql"

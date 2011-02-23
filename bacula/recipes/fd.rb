@@ -14,7 +14,7 @@ end
 dir_host = search(:node, "role:bacula_dir")
 
 template node.bacula.fd.config do
-    source "etc/bacula/bacula-fd.conf"
+    source "bacula-fd.conf"
     owner  "bacula"
     group  "bacula"
     mode   0644

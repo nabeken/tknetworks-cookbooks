@@ -12,4 +12,5 @@ end
 
 default[:bacula][:sd][:package] = package
 default[:bacula][:sd][:config]  = config
+default[:bacula][:sd][:devices] = Mash.new
 default[:bacula][:sd][:service] = "bacula-sd"

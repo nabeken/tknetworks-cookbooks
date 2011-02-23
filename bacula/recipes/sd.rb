@@ -9,7 +9,7 @@ end
 dir_host = search(:node, "role:bacula_dir")
 
 template node.bacula.sd.config do
-    source "etc/bacula/bacula-sd.conf"
+    source "bacula-sd.conf"
     owner  "bacula"
     group  "bacula"
     mode   0644
@@ -27,8 +27,11 @@ template node.bacula.sd.config do
     notifies :restart, resources(:service => node.bacula.sd.service)
 end
 
-# here, you can define custom devices via bacula_sd_device()
-include_recipe "bacula::sd_devices"
+node.bacula.sd.devices.each do |name, config|
+    bacula_sd_device name do
+        device config[:device]
+    end
+end
 
 # ready to startup
 service node.bacula.sd.service do
