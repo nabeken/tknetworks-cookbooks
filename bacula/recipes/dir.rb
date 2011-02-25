@@ -51,7 +51,7 @@ template "#{node.bacula.dir.config_dir}/bacula-dir.conf" do
     group  node.bacula.gid
     mode   0644
     variables({
-        :dir_confs    => dir_confs
+        :dir_confs    => dir_confs,
         :dir_hostname => node.hostname,
         :tls          => node.bacula.tls,
         :working_dir  => node.bacula.working_dir,
