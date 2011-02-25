@@ -13,16 +13,16 @@ define :bacula_client, :address => nil do
     t = nil
 
     begin
-	t = resources(:template => "#{node.bacula.config_dir}/bacula-dir.conf.d/client.conf")
+      t = resources(:template => "#{node.bacula.config_dir}/bacula-dir.conf.d/client.conf")
     rescue
-	t = template "#{node.bacula.config_dir}/bacula-dir.conf.d/client.conf" do
-	    source "etc/bacula/bacula-dir.conf.d/client.conf"
-	    owner node.bacula.uid
-	    group node.bacula.gid
-            mode  0644
-	    variables :clients => {}, :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs, :tls => node.bacula.tls
-            notifies :run, resources(:execute => "create_bacula_dir_conf")
-	end
+      t = template "#{node.bacula.config_dir}/bacula-dir.conf.d/client.conf" do
+        source "bacula-dir/client.conf"
+        owner node.bacula.uid
+        group node.bacula.gid
+        mode  0644
+        variables :clients => {}, :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs, :tls => node.bacula.tls
+        notifies :restart, resources(:service => node.bacula.dir.service)
+      end
     end
 
     t.variables[:clients][params[:name]] = Mash.new if t.variables[:clients][params[:name]].nil?
@@ -35,16 +35,16 @@ define :bacula_job, :default => nil, :client => nil, :schedule => nil, :storage 
     t = nil
 
     begin
-	t = resources(:template => "#{node.bacula.config_dir}/bacula-dir.conf.d/job.conf")
+      t = resources(:template => "#{node.bacula.config_dir}/bacula-dir.conf.d/job.conf")
     rescue
-	t = template "#{node.bacula.config_dir}/bacula-dir.conf.d/job.conf" do
-	    source "etc/bacula/bacula-dir.conf.d/job.conf"
-	    owner node.bacula.uid
-	    group node.bacula.gid
-            mode  0644
-	    variables :jobs => {}, :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs
-            notifies :run, resources(:execute => "create_bacula_dir_conf")
-	end
+      t = template "#{node.bacula.config_dir}/bacula-dir.conf.d/job.conf" do
+        source "bacula-dir/job.conf"
+        owner node.bacula.uid
+        group node.bacula.gid
+        mode  0644
+        variables :jobs => {}, :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs
+        notifies :restart, resources(:service => node.bacula.dir.service)
+      end
     end
 
     t.variables[:jobs][params[:name]] = Mash.new if t.variables[:jobs][params[:name]].nil?
