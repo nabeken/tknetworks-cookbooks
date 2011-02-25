@@ -4,7 +4,6 @@
   },
   "suggestions": {
   },
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
   "description": "Installs/Configures freebsd",
   "conflicting": {
   },
@@ -25,5 +24,6 @@
   "groupings": {
   },
   "recommendations": {
-  }
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n"
 }
