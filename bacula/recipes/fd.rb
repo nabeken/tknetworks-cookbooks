@@ -35,4 +35,3 @@ end
 service node.bacula.fd.service do
     action :start
 end
-
