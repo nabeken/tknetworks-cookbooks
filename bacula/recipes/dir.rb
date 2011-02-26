@@ -91,7 +91,7 @@ end
 include_recipe "bacula::dir_myclients"
 
 # default restore job
-bacula_job "ResotreFiles" do
+bacula_job "RestoreFiles" do
     job_type "Restore"
     fileset  "ClientStandardSet"
     storage  "TokyoClientFile"
