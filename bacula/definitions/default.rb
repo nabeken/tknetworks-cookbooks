@@ -21,7 +21,7 @@ define :bacula_client, :address => nil do
         group node.bacula.gid
         mode  0644
         variables :clients => {},
-                  :tls => node.bacula.tls
+                  :tls => node.bacula.tls,
                   :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs
         notifies :restart, resources(:service => node.bacula.dir.service)
       end
@@ -76,10 +76,10 @@ define :bacula_storage, :hostname => nil, :device => nil do
       end
     end
 
-    t.variables[:storage_resource][params[:name]] = Mash.new if t.variables[:jobs][params[:name]].nil?
+    t.variables[:storage_resources][params[:name]] = Mash.new if t.variables[:storage_resources][params[:name]].nil?
 
     [:hostname, :device].each do |para|
-        t.variables[:storage_resource][params[:name]][para] = params[para]
+        t.variables[:storage_resources][params[:name]][para] = params[para]
     end
 
     Chef::Log.info("registering bacula storage #{params[:name]}")

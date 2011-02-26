@@ -21,17 +21,22 @@ directory "#{node.bacula.dir.config_dir}/bacula-dir.conf.d" do
 end
 
 dir_confs = %w{
+  client.conf
+  job.conf
+  storage.conf
+}
+
+dir_conf_templates = %w{
     catalog.conf
     console.conf
     message.conf
     filesets.conf
     pool.conf
     schedule.conf
-    storage.conf
     jobdefs.conf
 }
 
-dir_confs.each do |f|
+dir_conf_templates.each do |f|
     template "#{node.bacula.dir.config_dir}/bacula-dir.conf.d/#{f}" do
         source "bacula-dir/#{f}"
         owner  node.bacula.uid
@@ -57,7 +62,7 @@ template "#{node.bacula.dir.config_dir}/bacula-dir.conf" do
     group  node.bacula.gid
     mode   0644
     variables({
-        :dir_confs    => dir_confs,
+        :dir_confs    => dir_confs + dir_conf_templates,
         :dir_hostname => node.hostname,
         :tls          => node.bacula.tls,
         :working_dir  => node.bacula.working_dir,
@@ -100,6 +105,13 @@ node.bacula.dir.jobs.each do |name, config|
         default  config[:default]
         schedule config[:schedule]
         storage  config[:storage]
+    end
+end
+
+node.bacula.dir.storage_resources.each do |name, res|
+    bacula_storage name do
+        hostname res[:hostname]
+        device   res[:device]
     end
 end
 
