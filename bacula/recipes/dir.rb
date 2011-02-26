@@ -15,6 +15,11 @@ service node.bacula.dir.service do
     action :enable
 end
 
+directory "#{node.bacula.dir.config_dir}/bacula-dir.conf.d" do
+  recursive  true
+  action     :create
+end
+
 dir_confs = %w{
     catalog.conf
     console.conf
@@ -22,6 +27,7 @@ dir_confs = %w{
     filesets.conf
     pool.conf
     schedule.conf
+    storage.conf
     jobdefs.conf
 }
 
@@ -64,6 +70,12 @@ template "#{node.bacula.dir.config_dir}/bacula-dir.conf" do
     notifies :restart, resources(:service => node.bacula.dir.service)
 end
 
+if node.platform == "freebsd"
+  link "/usr/local/etc/bacula-dir.conf" do
+    to "/usr/local/etc/bacula/bacula-dir.conf"
+  end
+end
+
 search(:node, "role:bacula_fd") do |n|
     bacula_client "#{n.hostname}-fd" do
         address getClientName(n.fqdn)
@@ -92,6 +104,6 @@ node.bacula.dir.jobs.each do |name, config|
 end
 
 # ready to startup
-#service node.bacula.dir.service do
-#    action :start
-#end
+service node.bacula.dir.service do
+    action :start
+end

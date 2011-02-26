@@ -20,7 +20,9 @@ define :bacula_client, :address => nil do
         owner node.bacula.uid
         group node.bacula.gid
         mode  0644
-        variables :clients => {}, :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs, :tls => node.bacula.tls
+        variables :clients => {},
+                  :tls => node.bacula.tls
+                  :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs
         notifies :restart, resources(:service => node.bacula.dir.service)
       end
     end
@@ -54,4 +56,31 @@ define :bacula_job, :default => nil, :client => nil, :schedule => nil, :storage 
     end
 
     Chef::Log.info("registering bacula job #{params[:name]}")
+end
+
+define :bacula_storage, :hostname => nil, :device => nil do
+    t = nil
+    begin
+      t = resources(:template => "#{node.bacula.config_dir}/bacula-dir.conf.d/storage.conf")
+    rescue
+      t = template "#{node.bacula.config_dir}/bacula-dir.conf.d/storage.conf" do
+        source "bacula-dir/storage.conf"
+        owner node.bacula.uid
+        group node.bacula.gid
+        mode  0644
+        variables :storage_resources => {},
+                  :tls               => node.bacula.tls,
+                  :password          => node.bacula.password,
+                  :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs
+        notifies :restart, resources(:service => node.bacula.dir.service)
+      end
+    end
+
+    t.variables[:storage_resource][params[:name]] = Mash.new if t.variables[:jobs][params[:name]].nil?
+
+    [:hostname, :device].each do |para|
+        t.variables[:storage_resource][params[:name]][para] = params[para]
+    end
+
+    Chef::Log.info("registering bacula storage #{params[:name]}")
 end

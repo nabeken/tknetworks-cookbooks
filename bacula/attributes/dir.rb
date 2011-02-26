@@ -4,6 +4,7 @@ default[:bacula][:dir][:port] = "9101"
 default[:bacula][:dir][:message] = "Daemon"
 default[:bacula][:dir][:enable_tls] = true
 default[:bacula][:dir][:jobs] = Mash.new
+default[:bacula][:dir][:storage_resources] = Mash.new
 
 config_dir = "/etc/bacula"
 query_file = "/usr/libexec/bacula/query.sql"
@@ -16,7 +17,7 @@ when "debian"
 
 when "freebsd"
     bacula_dir = "bacula-server"
-    config  = "/usr/local#{config}"
+    config_dir = "/usr/local#{config_dir}"
     query_file = "/usr/local/share/bacula/query.sql"
 
 when "gentoo"
