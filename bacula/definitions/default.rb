@@ -20,8 +20,9 @@ define :bacula_client, :address => nil do
         owner node.bacula.uid
         group node.bacula.gid
         mode  0644
-        variables :clients => {},
-                  :tls => node.bacula.tls,
+        variables :clients   => {},
+                  :tls       => node.bacula.tls,
+                  :password  => node.bacula.password,
                   :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs
         notifies :restart, resources(:service => node.bacula.dir.service)
       end
@@ -51,7 +52,7 @@ define :bacula_job, :default => nil, :client => nil, :schedule => nil, :storage 
 
     t.variables[:jobs][params[:name]] = Mash.new if t.variables[:jobs][params[:name]].nil?
 
-    [:client, :storage, :default, :schedule, :fileset, :pool, :messages, :pool].each do |para|
+    [:client, :storage, :job_type, :default, :schedule, :fileset, :pool, :messages, :pool, :where].each do |para|
         t.variables[:jobs][params[:name]][para] = params[para]
     end
 

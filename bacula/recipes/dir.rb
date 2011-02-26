@@ -98,6 +98,7 @@ bacula_job "RestoreFiles" do
     pool     "Default"
     messages "Standard"
     where    "/bacula-restores"
+    client   "#{node.hostname}-fd"
 end
 
 node.bacula.dir.jobs.each do |name, config|
@@ -105,6 +106,7 @@ node.bacula.dir.jobs.each do |name, config|
         default  config[:default]
         schedule config[:schedule]
         storage  config[:storage]
+        client   name
     end
 end
 
