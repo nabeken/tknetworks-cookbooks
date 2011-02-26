@@ -27,6 +27,12 @@ template node.bacula.sd.config do
     notifies :restart, resources(:service => node.bacula.sd.service)
 end
 
+if node.platform == "freebsd"
+  link "/usr/local/etc/bacula-sd.conf" do
+    to "/usr/local/etc/bacula/bacula-sd.conf"
+  end
+end
+
 node.bacula.sd.devices.each do |name, config|
     bacula_sd_device name do
         device config[:device]
