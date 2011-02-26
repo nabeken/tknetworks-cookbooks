@@ -7,7 +7,7 @@ when "debian"
     package = "bacula-fd"
 
 when "freebsd"
-    package = "bacula-server"
+    package = "bacula-client"
     config  = "/usr/local#{config}"
 
 when "gentoo"

@@ -31,6 +31,12 @@ template node.bacula.fd.config do
     notifies :restart, resources(:service => node.bacula.fd.service)
 end
 
+if node.platform == "freebsd"
+  link "/usr/local/etc/bacula-fd.conf" do
+    to "/usr/local/etc/bacula/bacula-fd.conf"
+  end
+end
+
 # ready to startup
 service node.bacula.fd.service do
     action :start
