@@ -34,6 +34,10 @@ if node.platform == "freebsd"
 end
 
 node.bacula.sd.devices.each do |name, config|
+    directory config[:device] do
+        recursive true
+        action    :create
+    end
     bacula_sd_device name do
         device config[:device]
     end
