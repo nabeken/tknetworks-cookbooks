@@ -41,7 +41,7 @@ dir_conf_templates.each do |f|
         source "bacula-dir/#{f}"
         owner  node.bacula.uid
         group  node.bacula.gid
-        mode   0644
+        mode   0640
         variables({
             :dir_hostname => node.hostname,
             :tls          => node.bacula.tls,
@@ -56,28 +56,30 @@ dir_conf_templates.each do |f|
     end
 end
 
-template "#{node.bacula.dir.config_dir}/bacula-dir.conf" do
-    source "bacula-dir.conf"
-    owner  node.bacula.uid
-    group  node.bacula.gid
-    mode   0644
-    variables({
-        :dir_confs    => dir_confs + dir_conf_templates,
-        :dir_hostname => node.hostname,
-        :tls          => node.bacula.tls,
-        :working_dir  => node.bacula.working_dir,
-        :pid_dir      => node.bacula.pid_dir,
-        :conf_dir     => node.bacula.config_dir,
-        :query_file   => node.bacula.dir.query_file,
-        :console_password        => node.bacula.dir.console_password,
-        :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs
-    })
-    notifies :restart, resources(:service => node.bacula.dir.service)
-end
+%w(bacula-dir.conf bconsole.conf).each do |f|
+  template "#{node.bacula.dir.config_dir}/#{f}" do
+      source f
+      owner  node.bacula.uid
+      group  node.bacula.gid
+      mode   0640
+      variables({
+          :dir_confs    => dir_confs + dir_conf_templates,
+          :dir_hostname => node.hostname,
+          :tls          => node.bacula.tls,
+          :working_dir  => node.bacula.working_dir,
+          :pid_dir      => node.bacula.pid_dir,
+          :conf_dir     => node.bacula.config_dir,
+          :query_file   => node.bacula.dir.query_file,
+          :console_password        => node.bacula.dir.console_password,
+          :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs
+      })
+      notifies :restart, resources(:service => node.bacula.dir.service)
+  end
 
-if node.platform == "freebsd"
-  link "/usr/local/etc/bacula-dir.conf" do
-    to "/usr/local/etc/bacula/bacula-dir.conf"
+  if node.platform == "freebsd"
+    link "/usr/local/etc/#{f}" do
+      to "/usr/local/etc/bacula/#{f}"
+    end
   end
 end
 

@@ -2,28 +2,28 @@
   "version": "0.1.0",
   "recipes": {
   },
-  "conflicting": {
+  "suggestions": {
   },
   "description": "Installs/Configures bacula",
-  "providing": {
+  "conflicting": {
   },
-  "maintainer": "TANABE Ken-ichi",
   "attributes": {
   },
-  "replacing": {
+  "providing": {
   },
   "dependencies": {
   },
   "platforms": {
   },
+  "maintainer": "TANABE Ken-ichi",
+  "replacing": {
+  },
+  "license": "Apache 2.0",
   "maintainer_email": "nabeken@tknetworks.org",
+  "name": "bacula",
   "groupings": {
   },
   "recommendations": {
-  },
-  "license": "Apache 2.0",
-  "name": "bacula",
-  "suggestions": {
   },
   "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n"
 }
