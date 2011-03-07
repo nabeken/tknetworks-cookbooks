@@ -5,7 +5,6 @@
 #
 # dir
 
-extend Chef::Bacula
 
 package node.bacula.dir.package do
     action :install
@@ -85,6 +84,7 @@ end
 
 search(:node, "role:bacula_fd") do |n|
     bacula_client "#{n.hostname}-fd" do
+        extend Chef::Bacula
         address getClientName(n.fqdn)
     end
 end
