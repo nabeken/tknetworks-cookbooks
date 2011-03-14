@@ -37,6 +37,9 @@ node.bacula.sd.devices.each do |name, config|
     directory config[:device] do
         recursive true
         action    :create
+        owner node.bacula.uid
+        group node.bacula.gid
+        mode 0740
     end
     bacula_sd_device name do
         device config[:device]

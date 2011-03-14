@@ -35,6 +35,10 @@ if node.platform == "freebsd"
   link "/usr/local/etc/bacula-fd.conf" do
     to "/usr/local/etc/bacula/bacula-fd.conf"
   end
+else
+  link "/usr/local/etc/bacula" do
+    to "/etc/bacula"
+  end
 end
 
 # ready to startup
