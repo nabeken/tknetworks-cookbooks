@@ -14,6 +14,14 @@ if node.platform != "freebsd"
     portage_use node.ntp.pkg do
       enable %w(caps)
     end
+
+    service "ntp-client" do
+      action :enable
+    end
+  end
+else
+  service "ntpdate" do
+    action :enable
   end
 end
 
