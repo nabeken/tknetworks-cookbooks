@@ -1,6 +1,6 @@
 include_attribute "ntp"
 
-default[:ntp][:servers] = %w{
+default[:ntp][:server][:servers] = %w{
   ntp.nict.jp
   ntp.jst.mfeed.ad.jp
 }

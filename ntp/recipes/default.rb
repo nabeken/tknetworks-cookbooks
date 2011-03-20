@@ -26,11 +26,3 @@ end
 service node.ntp.service do
   action :enable
 end
-
-template node.ntp.config do
-  source "ntp.conf"
-  owner  "root"
-  group  node.ntp.gid
-  mode   "0644"
-  notifies :restart, resources(:service => node.ntp.service)
-end
