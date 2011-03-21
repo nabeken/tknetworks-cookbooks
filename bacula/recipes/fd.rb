@@ -25,6 +25,7 @@ template node.bacula.fd.config do
         :tls          => node.bacula.tls,
         :working_dir  => node.bacula.working_dir,
         :pid_dir      => node.bacula.pid_dir,
+        :plugin_dir   => node.bacula.fd.plugin_dir,
         :hostname     => node.hostname,
         :maximum_concurrent_jobs => node.bacula.maximum_concurrent_jobs
     })
