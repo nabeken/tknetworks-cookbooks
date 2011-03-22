@@ -28,6 +28,11 @@ default[:bacula][:dir][:package] = bacula_dir
 default[:bacula][:dir][:config_dir] = config_dir
 default[:bacula][:dir][:query_file] = query_file
 default[:bacula][:dir][:service] = bacula_dir_service
+default[:bacula][:dir][:confs] = %w{
+  client.conf
+  job.conf
+  storage.conf
+}
 
 # setting via role
 default[:bacula][:dir][:console_password] = ""

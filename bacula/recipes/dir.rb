@@ -19,12 +19,6 @@ directory "#{node.bacula.dir.config_dir}/bacula-dir.conf.d" do
   action     :create
 end
 
-dir_confs = %w{
-  client.conf
-  job.conf
-  storage.conf
-}
-
 dir_conf_templates = %w{
     catalog.conf
     console.conf
@@ -62,7 +56,7 @@ end
       group  node.bacula.gid
       mode   0640
       variables({
-          :dir_confs    => dir_confs + dir_conf_templates,
+          :dir_confs    => node.bacula.dir.confs + dir_conf_templates,
           :dir_hostname => node.hostname,
           :tls          => node.bacula.tls,
           :working_dir  => node.bacula.working_dir,
