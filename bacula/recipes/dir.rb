@@ -114,6 +114,6 @@ node.bacula.dir.storage_resources.each do |name, res|
 end
 
 # ready to startup
-service node.bacula.dir.service do
-    action :start
-end
+#service node.bacula.dir.service do
+#    action :start
+#end
