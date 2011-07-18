@@ -1,6 +1,8 @@
 user "nagios" do
     home node.nagios.server.homedir
     supports :manage_home => true
+    action [:create, :unlock]
+    password '*'
 end
 
 package node.nagios.server.package do

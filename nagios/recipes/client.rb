@@ -8,6 +8,8 @@ end
 
 user "nagios" do
     home node.nagios.client.dir
+    action [:create, :unlock]
+    password '*'
 end
 
 package node.nagios.client.package do
