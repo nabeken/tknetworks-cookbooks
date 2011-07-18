@@ -1,6 +1,6 @@
 server_hosts = node.nagios.client.hosts
 
-search(:node, "role:nagios_server") do |s|
+search(:node, "roles:nagios_server") do |s|
     s["network"]["interfaces"]["eth0"]["addresses"].each do |addr, prop|
         server_hosts.push addr if (prop[:family] == "inet6") && addr !~ /^fe80/
     end

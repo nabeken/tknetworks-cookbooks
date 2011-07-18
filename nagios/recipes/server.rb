@@ -65,7 +65,7 @@ extend Chef::Nagios
 # roleベースでホストの自動設定
 hosts = {}
 
-search(:node, "role:nagios_client") do |s|
+search(:node, "roles:nagios_client") do |s|
     hosts[s["fqdn"]] = nagios_host s["fqdn"] do
         use "generic-server"
     end
@@ -80,7 +80,7 @@ nagios_service "ping" do
 end
 
 node.nagios.server.autoregister_services.each do |name|
-    search(:node, "role:nagios_service_#{name}") do |n|
+    search(:node, "roles:nagios_service_#{name}") do |n|
         # roleベースで監視用コマンドの自動設定
         Chef::Log.info("autoregistering service #{name} on #{n.fqdn}")
         nagios_service name do
