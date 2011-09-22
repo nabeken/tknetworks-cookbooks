@@ -48,7 +48,11 @@ end
     unless File.exist?(f)
         Chef::Log.info("touching #{f}")
         FileUtils.mkdir_p(File.dirname(f))
-        FileUtils.touch(f)
+        File.open(f) do |f|
+          f.puts "PORTDIR_OVERLAY="
+          f.puts "$PORTDIR_OVERLAY"
+          f.puts "\""
+        end
     end
 end
 
