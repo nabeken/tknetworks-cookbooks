@@ -35,6 +35,6 @@ execute "a2dissite default" do
   notifies :restart, "service[#{node.apache2.service}]", :delayed
   only_if do
     node.apache2.default_ssl_only &&
-    File.exists?("#{node.apache2.config.dir}/sites-enabled/default")
+    File.exists?("#{node.apache2.config.dir}/sites-enabled/000-default")
   end
 end
