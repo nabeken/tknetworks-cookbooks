@@ -28,4 +28,8 @@ if node.apache2.use_cronolog
 end
 
 # setting /etc/apache2 or /etc/httpd....
-include_recipe "apache2::#{node.hostname}"
+begin
+  include_recipe "apache2::#{node.hostname}"
+rescue ArgumentError
+  Chef::Log.info("apache2::#{node.hostname} not found. skipped...")
+end
