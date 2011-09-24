@@ -1,4 +1,4 @@
-define :debian_aptline, :url => nil, :path => nil, :repo => nil do
+define :debian_aptline, :url => nil, :path => nil, :repo => nil, :release => nil do
   t = nil
 
   file = "sources.list.d/#{params[:name]}"
@@ -11,7 +11,7 @@ define :debian_aptline, :url => nil, :path => nil, :repo => nil do
           owner "root"
           group "root"
           mode  0644
-          variables :aptlines => [], :release => node.debian.release
+          variables :aptlines => []
     end
   end
 
@@ -19,6 +19,7 @@ define :debian_aptline, :url => nil, :path => nil, :repo => nil do
   [:url, :path, :repo].each do |para|
       aptline[para] = params[para]
   end
+  aptline[:release] = params[:release].nil? ? node.debian.release : params[:release]
 
   t.variables[:aptlines].push aptline
 
