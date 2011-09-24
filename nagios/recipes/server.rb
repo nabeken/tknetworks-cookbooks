@@ -40,7 +40,7 @@ end
         group node.nagios.server.gid
         mode  0770
         variables :dir => node.nagios.server.dir
-        notifies :restart, resources(:service => node.nagios.server.service)
+        notifies :restart, "service[#{node.nagios.server.service}]", :delayed
     end
 end
 
@@ -56,8 +56,15 @@ end
         owner node.nagios.server.uid
         group node.nagios.server.gid
         mode  0770
-        notifies :restart, resources(:service => node.nagios.server.service)
+        notifies :restart, "service[#{node.nagios.server.service}]", :delayed
     end
+end
+
+template "#{node.nagios.server.dir}/htpasswd.users" do
+  source "etc/nagios3/htpasswd.users"
+  owner "root"
+  group node.nagios.server.gid
+  mode 0640
 end
 
 extend Chef::Nagios
@@ -82,7 +89,7 @@ end
 node.nagios.server.autoregister_services.each do |name|
     search(:node, "roles:nagios_service_#{name}") do |n|
         # roleベースで監視用コマンドの自動設定
-        Chef::Log.info("autoregistering service #{name} on #{n.fqdn}")
+        Chef::Log.debug("autoregistering service #{name} on #{n.fqdn}")
         nagios_service name do
             use n.nagios.service[name][:use]
             host n[:fqdn]
@@ -90,7 +97,7 @@ node.nagios.server.autoregister_services.each do |name|
         end
 
         # roleベースで各コマンドの引数を自動設定
-        Chef::Log.info("autoregistering checkcommands #{name}")
+        Chef::Log.debug("autoregistering checkcommands #{name}")
         nagios_checkcommand n.nagios.checkcommands[name][:name] do
             command_line n.nagios.checkcommands[name][:command]
         end
