@@ -15,6 +15,7 @@ end
 debian_aptline "opscode" do
     url  "http://apt.opscode.com"
     repo %w{main}
+    release "#{node.debian.release}-0.10"
 end
 
 # remove execute bits
