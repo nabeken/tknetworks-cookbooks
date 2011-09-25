@@ -80,10 +80,10 @@ define :nagios_service, :use => nil, :hostgroups => nil, :description => nil, :c
   t = nil
 
   begin
-    t = resources(:template => "#{node.nagios.server.dir}/services.cfg")
+    t = resources(:template => "#{node.nagios.server.dir}/conf.d/services_nagios2.cfg")
   rescue
-    t = template "#{node.nagios.server.dir}/services.cfg" do
-          source "etc/nagios3/services.cfg"
+    t = template "#{node.nagios.server.dir}/conf.d/services_nagios2.cfg" do
+          source "etc/nagios3/conf.d/services_nagios2.cfg"
           owner node.nagios.server.uid
           group node.nagios.server.gid
           mode  0770
@@ -92,8 +92,9 @@ define :nagios_service, :use => nil, :hostgroups => nil, :description => nil, :c
     end
   end
 
-  # ホスト登録がない場合はエラーにしてスキップ (かつhostgroups指定がない)
-  unless node.run_state[:nagios_hosts].include?(params[:host]) || !params[:hostgroups].nil?
+  # ホスト登録がない場合あるいはrun_state[:nagios_hosts]が空の場合はエラー
+  # ただし、ホストグループ指定がある場合はエラーにしない(= ホストグループ指定がない場合はエラー)
+  if (node.run_state[:nagios_hosts].nil? || !node.run_state[:nagios_hosts].include?(params[:host])) || !params[:hostgroups].nil?
     Chef::Log.error("#{params[:host]} is not registered as nagios host. skipped....")
     next
   end
@@ -118,9 +119,9 @@ define :nagios_checkcommand, :command_line => nil do
   t = nil
 
   begin
-    t = resources(:template => "#{node.nagios.server.dir}/checkcommands.cfg")
+    t = resources(:template => "#{node.nagios.server.dir}/conf.d/checkcommands.cfg")
   rescue
-    t = template "#{node.nagios.server.dir}/checkcommands.cfg" do
+    t = template "#{node.nagios.server.dir}/conf.d/checkcommands.cfg" do
           source "etc/nagios3/checkcommands.cfg"
           owner node.nagios.server.uid
           group node.nagios.server.gid

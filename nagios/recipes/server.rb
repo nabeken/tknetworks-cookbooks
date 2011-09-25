@@ -33,6 +33,9 @@ end
 %w{
     nagios.cfg
     resource.cfg
+    conf.d/contacts_nagios2.cfg
+    conf.d/hostgroups_nagios2.cfg
+    conf.d/timeperiods_nagios2.cfg
 }.each do |f|
     template "#{node.nagios.server.dir}/#{f}" do
         source "etc/nagios3/#{f}"
@@ -44,27 +47,27 @@ end
     end
 end
 
-%w{
-    cgi.cfg
-    contact.cfg
-    hostgroups.cfg
-    misccommands.cfg
-    timeperiods.cfg
-}.each do |f|
-    template "#{node.nagios.server.dir}/#{f}" do
-        source "etc/nagios3/#{f}"
-        owner node.nagios.server.uid
-        group node.nagios.server.gid
-        mode  0770
-        notifies :restart, "service[#{node.nagios.server.service}]", :delayed
-    end
-end
-
 template "#{node.nagios.server.dir}/htpasswd.users" do
   source "etc/nagios3/htpasswd.users"
   owner "root"
   group node.nagios.server.gid
   mode 0640
+end
+
+# 不要なファイルを削除する
+%w{
+  generic-host_nagios2.cfg
+  generic-service_nagios2.cfg
+  localhost_nagios2.cfg
+  extinfo_nagios2.cfg
+}.each do |f|
+ fn = "#{node.nagios.server.dir}/conf.d/#{f}"
+  file fn do
+    action :delete
+    only_if do
+      File.exists?(fn)
+    end
+  end
 end
 
 extend Chef::Nagios
