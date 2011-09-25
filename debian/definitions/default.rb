@@ -1,7 +1,7 @@
 define :debian_aptline, :url => nil, :path => nil, :repo => nil, :release => nil do
   t = nil
 
-  file = "sources.list.d/#{params[:name]}"
+  file = "sources.list.d/#{params[:name]}.list"
 
   begin
     t = resources(:template => "/etc/apt/#{file}")
