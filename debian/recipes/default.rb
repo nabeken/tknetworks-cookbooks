@@ -23,8 +23,13 @@ file "/etc/cron.daily/find" do
     mode 0444
 end
 
-package "cron-apt" do
-    action :install
+%w{
+  cron-apt
+  rsync
+}.each do |pkg|
+  package pkg do
+      action :install
+  end
 end
 
 cookbook_file "/etc/cron-apt/config" do
