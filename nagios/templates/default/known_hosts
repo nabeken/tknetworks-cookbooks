@@ -1,0 +1,3 @@
+<% @pubkeys.each do |host, key| %>
+<%= host %> ssh-rsa <%= key %>
+<% end %>
