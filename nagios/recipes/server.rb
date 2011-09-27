@@ -90,12 +90,12 @@ search(:node, "roles:nagios_client") do |s|
       use "generic-server"
     end
     # IPv4とIPv6アドレスを設定する
-    Chef::Log.info("node: #{s["fqdn"]}")
+    Chef::Log.debug("node: #{s["fqdn"]}")
     s["network"]["interfaces"].each do |int, props|
-      Chef::Log.info("interface: #{int}, props: #{props.inspect}")
+      Chef::Log.debug("interface: #{int}, props: #{props.inspect}")
       next unless props.has_key?("addresses")
       props["addresses"].each do |addr, addr_props|
-        Chef::Log.info("addr: #{addr}, props: #{addr_props.inspect}")
+        Chef::Log.debug("addr: #{addr}, props: #{addr_props.inspect}")
         # プライベートIPv4アドレスとループバックは除外
         next if private_ipaddress_and_loopback.any? { |mask| mask.match(addr) }
         if addr_props["family"] == "inet" || (addr_props["family"] == "inet6" && addr_props["scope"] == "Global")
