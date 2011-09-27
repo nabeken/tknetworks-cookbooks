@@ -12,8 +12,10 @@ user "nagios" do
     password '*'
 end
 
-package node.nagios.client.package do
-    action :install
+node.nagios.client.packages.each do |pkg|
+  package pkg do
+      action :install
+  end
 end
 
 directory node.nagios.client.dir do
