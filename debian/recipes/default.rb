@@ -1,5 +1,9 @@
 return if node.platform != "debian"
 
+execute "apt-get update" do
+  command "/usr/bin/apt-get -q update"
+end
+
 debian_aptline "security" do
     url  "http://security.debian.org/"
     path "/updates"
