@@ -76,7 +76,7 @@ define :nagios_generic, :config => nil, :group => "default", :generic_type => "h
   Chef::Log.debug("registering nagios generic #{params[:name]}")
 end
 
-define :nagios_service, :use => nil, :hostgroups => nil, :description => nil, :command => nil, :host => nil, :group => "services" do
+define :nagios_service, :use => nil, :hostgroups => nil, :description => nil, :command => nil, :args => nil, :host => nil, :group => "services" do
   t = nil
 
   begin
@@ -108,7 +108,10 @@ define :nagios_service, :use => nil, :hostgroups => nil, :description => nil, :c
   myservice[:hostgroups] = hostgroups.nil? ? hostgroups : hostgroups.join(",")
   myservice[:use] = use
   myservice[:description] = description
-  myservice[:command] = params[:command].kind_of?(Array) ? params[:command].join("!") : params[:command]
+
+  command = params[:command]
+  command << "!#{params[:args].join("!")}" unless params[:args].nil?
+  myservice[:command] = command
 
   t.variables[:services][params[:name]] = [] unless t.variables[:services].has_key?(params[:name])
   t.variables[:services][params[:name]].push myservice
