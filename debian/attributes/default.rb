@@ -1,10 +1,12 @@
 release = case platform_version
           when "squeeze/sid"
               "squeeze"
-          when "5.0.6"
+          when /^5\./
               "lenny"
+          when /^6\./
+              "squeeze"
           else
-              "lenny"
+              raise "Unknown codename"
           end
 
 default[:debian][:release] = release
