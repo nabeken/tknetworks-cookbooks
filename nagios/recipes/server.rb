@@ -120,7 +120,8 @@ end
 nagios_service "ping" do
   use "generic-service"
   hostgroups node.nagios.server.hostgroups
-  command ["check_ping", "2000.0,50%", "2000.0,80%"]
+  command "check_ping"
+  args %(2000.0,50%, 2000.0,80%)
   description "Ping monitoring"
 end
 
