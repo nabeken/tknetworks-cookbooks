@@ -143,14 +143,14 @@ search(:role, "name:nagios_service_*") do |role|
   search(:node, "roles:#{role.name}") do |n|
     Chef::Log.debug("autoregistering service #{role.name} on #{n.fqdn}")
     nagios_service role.name do
-      use n.nagios.service[name][:use]
+      use n.nagios.service[role.name][:use]
       host n.name
-      command n.nagios.service[name][:command]
+      command n.nagios.service[role.name][:command]
 
-      if n.nagios.service[name][:args].nil?
-        args n.nagios.service[name][:default_args]
+      if n.nagios.service[role.name][:args].nil?
+        args n.nagios.service[role.name][:default_args]
       else
-        args n.nagios.service[name][:args]
+        args n.nagios.service[role.name][:args]
       end
     end
   end
