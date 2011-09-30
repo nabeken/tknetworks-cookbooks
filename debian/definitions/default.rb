@@ -12,6 +12,7 @@ define :debian_aptline, :url => nil, :path => nil, :repo => nil, :release => nil
           group "root"
           mode  0644
           variables :aptlines => []
+          cookbook "debian"
     end
   end
 
