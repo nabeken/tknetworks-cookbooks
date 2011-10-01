@@ -11,7 +11,7 @@ end
 
 template "#{node.stunnel.dir}/stunnel.conf" do
   source "stunnel.conf"
-  notifies :restart, "service[#{node.stunnel.service}]", :delayed
+  notifies :restart, "service[#{node.stunnel.service}]", :immediately
   variables :chroot => node.stunnel.chroot,
             :uid => node.stunnel.uid,
             :gid => node.stunnel.gid,
@@ -22,7 +22,7 @@ end
 if node.platform == "debian"
   template "/etc/default/stunnel4" do
     source "etc/default/stunnel4"
-    notifies :restart, "service[#{node.stunnel.service}]", :delayed
+    notifies :restart, "service[#{node.stunnel.service}]", :immediately
   end
 end
 
