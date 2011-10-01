@@ -104,11 +104,11 @@ end
 
 # god
 execute "dbee-worker-start" do
-  command "#{node.dbee.gem_dir}/bin/god -c #{node.dbee.dir}/god/worker.god"
+  command "sleep 10 && #{node.dbee.gem_dir}/bin/god -c #{node.dbee.dir}/god/worker.god && sleep 10"
 end
 
 execute "dbee-worker-terminate" do
-  command "#{node.dbee.gem_dir}/bin/god terminate && sleep 10"
+  command "sleep 10 && #{node.dbee.gem_dir}/bin/god terminate && sleep 10"
   action :nothing
   ignore_failure true
 end
