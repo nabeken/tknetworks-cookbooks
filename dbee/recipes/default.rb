@@ -6,6 +6,7 @@
 #
 
 include_recipe "stunnel"
+include_recipe "debian"
 
 # aptline
 if node.platform == "debian"
@@ -13,7 +14,6 @@ if node.platform == "debian"
     url node.dbee.aptline.url
     path node.dbee.aptline.path
     repo node.dbee.aptline.repo
-    notifies :run, "execute[apt-get update]", :immediately
   end
   package "debian-multimedia-keyring" do
     action :install
@@ -110,4 +110,5 @@ end
 execute "dbee-worker-terminate" do
   command "#{node.dbee.gem_dir}/bin/god terminate && sleep 10"
   action :nothing
+  ignore_failure true
 end
