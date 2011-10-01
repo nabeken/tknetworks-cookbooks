@@ -22,6 +22,7 @@ end
 if node.platform == "debian"
   template "/etc/default/stunnel4" do
     source "etc/default/stunnel4"
+    notifies :restart, "service[#{node.stunnel.service}]", :delayed
   end
 end
 
