@@ -31,6 +31,7 @@ end
 %w{
   cron-apt
   rsync
+  strace
 }.each do |pkg|
   package pkg do
     action :install
