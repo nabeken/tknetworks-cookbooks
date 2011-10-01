@@ -13,6 +13,7 @@ define :debian_aptline, :url => nil, :path => nil, :repo => nil, :release => nil
           mode  0644
           variables :aptlines => []
           cookbook "debian"
+          notifies :run, "execute[apt-get-update]", :immediately
     end
   end
 
