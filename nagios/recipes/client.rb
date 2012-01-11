@@ -15,6 +15,7 @@ end
 node.nagios.client.packages.each do |pkg|
   package pkg do
       action :install
+      source "ports" if node.platform == "freebsd"
   end
 end
 
