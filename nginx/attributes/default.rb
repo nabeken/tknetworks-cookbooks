@@ -43,7 +43,8 @@ when "freebsd"
   default[:nginx][:binary]     = "/usr/local/sbin/nginx"
   default[:nginx][:nxensite]   = "/usr/local/sbin/nxensite"
   default[:nginx][:nxdissite]  = "/usr/local/sbin/nxdissite"
-  default[:nginx][:worker_processes] = 1
+  default[:nginx][:worker_processes] = (virtualization[:system] == "jail" and
+                                        virtualization[:role] == "guest") ? 1 : cpu[:total]
   default[:nginx][:location][:root_dir] = "/var/www/nginx-default"
   default[:nginx][:ports_conf] = "/var/db/ports/nginx/options"
   default[:nginx][:options] = %w{

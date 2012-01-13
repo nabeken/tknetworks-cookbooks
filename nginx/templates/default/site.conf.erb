@@ -1,0 +1,27 @@
+server {
+  listen   [::]:<%= @port %>;
+  listen   <%= @port %>;
+  <% if @params[:use_https] %>
+  ssl                         on;
+  ssl_certificate             <%= @ssl_key %>
+  ssl_certificate_key         <%= @ssl_certificate_key %>
+  ssl_session_timeout         5m;
+  ssl_protocols               SSLv3 TLSv1;
+  ssl_ciphers                 ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+  ssl_prefer_server_ciphers   on;
+  <% end %>
+  server_name  <%= @params[:name] %>;
+
+  access_log  <%= node[:nginx][:log_dir] %>/<%= @params[:name] %>/access.log;
+
+  # location settings should be in nginx.conf
+  #location / {
+  #  root   /var/www/<%= @params[:name] %>/htdocs;
+  #  index  index.html index.htm;
+  #}
+  <% if @params[:use_passenger] %>
+  root /var/www/<%= @params[:name] %>/htdocs/public;
+  passenger_enabled on;
+  <% end %>
+  include  /var/www/<%= @params[:name] %>/nginx.conf;
+}

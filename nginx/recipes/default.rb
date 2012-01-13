@@ -34,7 +34,10 @@ end
 [
   "#{node[:nginx][:dir]}/sites-enabled/",
   "#{node[:nginx][:dir]}/sites-available/",
-  "#{node[:nginx][:log_dir]}"
+  "#{node[:nginx][:dir]}/conf.d/",
+  "#{node[:nginx][:dir]}/ssl/",
+  "#{node[:nginx][:log_dir]}",
+  "/var/www"
 ].each do |dir|
   directory dir do
     mode 0755
@@ -58,6 +61,7 @@ template "nginx.conf" do
   owner "root"
   group node[:nginx][:gid]
   mode 0644
+  notifies :restart, "service[nginx]", :delayed
 end
 
 template "#{node[:nginx][:dir]}/sites-available/default" do
