@@ -1,6 +1,13 @@
 define :ports_options, :options => nil do
   t = nil
   f = "/var/db/ports/#{params[:name]}/options"
+
+  directory ::File.dirname(f) do
+    action :create
+    only_if do
+      not ::File.exists?(::File.dirname(f))
+    end
+  end
   begin
     t = resources("template[#{f}]")
   rescue
@@ -13,7 +20,7 @@ define :ports_options, :options => nil do
         end
     params[:options].each do |opt|
       t.variables[:options].push opt
-      Chef::Log.info("Add #{opt} to #{params[:name]}")
+      Chef::Log.debug("Add #{opt} to #{params[:name]}")
     end
   end
 end
