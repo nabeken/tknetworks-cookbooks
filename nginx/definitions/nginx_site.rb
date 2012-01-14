@@ -46,6 +46,7 @@ define :nginx_site,
           )
           cookbook "nginx"
           source "site.conf.erb"
+          notifies :restart, "service[nginx]"
         end
   end
 
