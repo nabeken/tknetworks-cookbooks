@@ -14,6 +14,12 @@ cron "portsnap" do
   end
 end
 
-package "shells/bash" do
-  source "ports"
+%w{
+  shells/bash
+  shells/zsh
+  sysutils/tmux
+}.each do |pkg|
+  package pkg do
+    source "ports"
+  end
 end
