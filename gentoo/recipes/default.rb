@@ -18,6 +18,7 @@ end
   app-portage/layman
   app-portage/eix
   app-portage/gentoolkit
+  app-shells/zsh
 }.each do |pkg|
   package pkg do
     action :install
