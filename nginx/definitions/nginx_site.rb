@@ -28,10 +28,10 @@ define :nginx_site,
   t = nil
   f = "#{node[:nginx][:dir]}/sites-available/#{params[:name]}"
   port = params[:port] || (params[:use_https] ? 443 : 80)
-  ssl_certificate = params[:ssl_cert] ||
-                    "#{node[:nginx][:dir]}/ssl/#{params[:name]}.crt"
+  ssl_cert = params[:ssl_cert] ||
+              "#{node[:nginx][:dir]}/ssl/#{params[:name]}.crt"
   ssl_key = params[:ssl_key] ||
-                    "#{node[:nginx][:dir]}/ssl/#{params[:name]}.key"
+              "#{node[:nginx][:dir]}/ssl/#{params[:name]}.key"
   begin
     t = resources("template[#{f}]")
   rescue
@@ -39,10 +39,10 @@ define :nginx_site,
           owner "root"
           mode "0644"
           variables(
-            :port            => port,
-            :params          => params,
-            :ssl_key         => ssl_key,
-            :ssl_certificate => ssl_certificate
+            :port     => port,
+            :params   => params,
+            :ssl_key  => ssl_key,
+            :ssl_cert => ssl_cert
           )
           cookbook "nginx"
           source "site.conf.erb"

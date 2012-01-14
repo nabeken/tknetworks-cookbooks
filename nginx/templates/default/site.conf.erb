@@ -4,7 +4,7 @@ server {
   <% if @params[:use_https] %>
   ssl                         on;
   ssl_certificate             <%= @ssl_key %>;
-  ssl_certificate_key         <%= @ssl_certificate_key %>;
+  ssl_certificate_key         <%= @ssl_cert %>;
   ssl_session_timeout         5m;
   ssl_protocols               SSLv3 TLSv1;
   ssl_ciphers                 ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
