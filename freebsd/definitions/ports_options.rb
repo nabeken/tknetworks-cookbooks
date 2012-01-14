@@ -4,6 +4,7 @@ define :ports_options, :options => nil do
 
   directory ::File.dirname(f) do
     action :create
+    recursive true
     only_if do
       not ::File.exists?(::File.dirname(f))
     end
