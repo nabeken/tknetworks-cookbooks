@@ -28,6 +28,7 @@ end
   shells/bash
   shells/zsh
   sysutils/tmux
+  net/rsync
   ports-mgmt/portmaster
 }.each do |pkg|
   package pkg do
