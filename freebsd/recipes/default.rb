@@ -14,10 +14,21 @@ cron "portsnap" do
   end
 end
 
+ports_options "ports-mgmt/portmaster" do
+  options %w{
+    WITH_BASH=true
+    WITH_ZSH=true
+  }
+  only_if do
+    node.platform == "freebsd"
+  end
+end
+
 %w{
   shells/bash
   shells/zsh
   sysutils/tmux
+  ports-mgmt/portmaster
 }.each do |pkg|
   package pkg do
     source "ports"
