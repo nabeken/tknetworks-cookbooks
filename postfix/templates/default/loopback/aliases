@@ -11,4 +11,4 @@ ftp: root
 abuse: root
 noc: root
 security: root
-root: <%= node.postfix.config.admin %>
+root: <%= node[:postfix][:config][:admin] %>

@@ -1,12 +1,9 @@
-# See /usr/share/postfix/main.cf.dist for a commented, more complete version
-
-
 # Debian specific:  Specifying a file name will cause the first
 # line of that file to be used as the name.  The Debian default
 # is /etc/mailname.
-myorigin = /etc/mailname
+myorigin = <%= node[:postfix][:config][:myorigin] %>
 
-smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
+smtpd_banner = $myhostname ESMTP $mail_name
 biff = no
 
 # appending .domain is the MUA's job.
