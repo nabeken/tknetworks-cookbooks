@@ -51,10 +51,10 @@ define :nginx_site,
   end
 
   dirs = [
-    "#{node[:nginx][:log_dir]}/#{params[:name]}",
-    "/var/www/#{params[:name]}/htdocs"
+    "/var/www/#{params[:name]}",
+    "/var/www/#{params[:name]}/htdocs",
+    "#{node[:nginx][:log_dir]}/#{params[:name]}"
   ]
-  dirs.push "/var/www/#{params[:name]}/public" if params[:use_passenger]
   dirs.each do |d|
     directory d do
       owner node[:nginx][:user]

@@ -19,6 +19,27 @@
 # limitations under the License.
 #
 
+if node[:nginx][:passenger] == "on"
+  ports_options "rubygem-passenger" do
+    options %w{
+      WITH_NGINXPORT=true
+      WITHOUT_APACHEPORT=true
+      WITHOUT_DEBUG=true
+      WITHOUT_SYMLINK=true
+    }
+    only_if do
+      node.platform == "freebsd"
+    end
+  end
+  package "www/rubygem-passenger" do
+    source "ports"
+    only_if do
+      node[:platform] == "freebsd"
+    end
+    notifies :restart, "service[nginx]"
+  end
+end
+
 ports_options "nginx" do
   options node[:nginx][:options]
   only_if do
@@ -62,6 +83,12 @@ template "nginx.conf" do
   group node[:nginx][:gid]
   mode 0644
   notifies :restart, "service[nginx]", :delayed
+  if node[:nginx][:passenger] == "on"
+    passenger_root = `passenger-config --root`.strip
+    unless passenger_root.empty? && passenger_root.start_with("/")
+      variables :passenger_root => passenger_root
+    end
+  end
 end
 
 template "#{node[:nginx][:dir]}/sites-available/default" do

@@ -20,7 +20,7 @@ server {
   #  index  index.html index.htm;
   #}
   <% if @params[:use_passenger] %>
-  root /var/www/<%= @params[:name] %>/htdocs/public;
+  root /var/www/<%= @params[:name] %>/app/public;
   passenger_enabled on;
   <% end %>
   include  /var/www/<%= @params[:name] %>/nginx.conf;
