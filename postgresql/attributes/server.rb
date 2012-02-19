@@ -15,7 +15,7 @@
 #
 include_attribute "postgresql"
 
-default[:postgresql][:server][:max_connections] = 10
+default[:postgresql][:server][:max_connections] = 30
 
 case platform
 when "debian"
