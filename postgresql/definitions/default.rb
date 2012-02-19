@@ -75,3 +75,28 @@ define :pg_hba,
     raise "type must be local, host, hostssl or hostnossl"
   end
 end
+
+define :createuser,
+       :createdb   => true,
+       :createrole => false,
+       :login      => true,
+       :superuser  => false do
+  args = {
+    :createdb   => {true => "--createdb",   false => "--no-createdb"},
+    :createrole => {true => "--createrole", false => "--no-createrole"},
+    :login      => {true => "--login",      false => "--no-login"},
+    :superuser  => {true => "--superuser",  false => "--no-superuser"},
+  }
+  cmd = "createuser"
+  args.keys.each do |k|
+    cmd += " #{args[k][params[k]]}"
+  end
+
+  execute "postgresql-createuser-#{params[:name]}" do
+    user node[:postgresql][:uid]
+    command "#{cmd} #{params[:name]}"
+    not_if do
+      `su #{node[:postgresql][:uid]} -c "echo \\"SELECT count(*) FROM pg_roles WHERE rolname = '#{params[:name]}';\\" | psql -A -t -U #{node[:postgresql][:uid]} postgres"`.strip == "1"
+    end
+  end
+end
