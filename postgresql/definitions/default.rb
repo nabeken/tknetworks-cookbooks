@@ -100,3 +100,15 @@ define :createuser,
     end
   end
 end
+
+define :createdb, :user => nil do
+  params[:user] = params[:name] if params[:user].nil?
+
+  execute "postgresql-createdb-#{params[:name]}" do
+    user params[:user]
+    command "createdb #{params[:name]}"
+    not_if do
+      `su #{params[:user]} -c "echo \\"SELECT count(*) FROM pg_database WHERE datname = '#{params[:name]}';\\" | psql -A -t -U #{params[:user]} postgres"`.strip == "1"
+    end
+  end
+end
