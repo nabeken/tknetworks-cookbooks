@@ -21,7 +21,7 @@
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
-include_recipe "postgresql::client"
+include_recipe "postgresql"
 
 # randomly generate postgres password
 node.set_unless[:postgresql][:password][:postgres] = secure_password

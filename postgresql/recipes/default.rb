@@ -17,4 +17,15 @@
 # limitations under the License.
 #
 
+# In FreeBSD set DEFAULT_PGSQL_VER=91
+execute "postgresql-set-default-vgsql-ver" do
+  command "echo DEFAULT_PGSQL_VER=#{node[:postgresql][:version].gsub(/\./, "")}" +
+          " >> /etc/make.conf"
+  only_if do
+    node[:platform] == "freebsd" &&
+    !File.open('/etc/make.conf').readlines.any? { |l|
+      l.start_with?("DEFAULT_PGSQL_VER=")
+    }
+  end
+end
 include_recipe "postgresql::client"
