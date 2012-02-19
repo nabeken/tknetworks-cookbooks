@@ -44,6 +44,22 @@ execute "postgresql-initdb" do
   end
 end
 
+begin
+  resources("template[#{node[:postgresql][:dir]}/pg_hba.conf]")
+rescue
+  template "#{node[:postgresql][:dir]}/pg_hba.conf" do
+    owner node[:postgresql][:uid]
+    group node[:postgresql][:gid]
+    mode  0600
+    variables(
+      :records => []
+    )
+    cookbook "postgresql"
+    source "pg_hba.conf.erb"
+    notifies :restart, "service[#{node[:postgresql][:service]}]"
+  end
+end
+
 %w{
   pg_hba.conf
   postgresql.conf

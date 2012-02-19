@@ -81,3 +81,7 @@ local   all         all                               ident
 host    all         all         127.0.0.1/32          md5
 # IPv6 local connections:
 host    all         all         ::1/128               md5
+
+<% @records.each do |record| %>
+<%= record[:type] %>    <%= record[:database] %>    <%= record[:user] %>    <%= record[:address] %>     <%= record[:auth_method] %>
+<% end %>
