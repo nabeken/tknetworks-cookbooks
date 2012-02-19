@@ -60,17 +60,12 @@ rescue
   end
 end
 
-%w{
-  pg_hba.conf
-  postgresql.conf
-}.each do |f|
-  template "#{node[:postgresql][:dir]}/#{f}" do
-    source "#{f}.erb"
-    owner node[:postgresql][:uid]
-    group node[:postgresql][:gid]
-    mode  0600
-    notifies :restart, "service[#{node[:postgresql][:service]}]"
-  end
+template "#{node[:postgresql][:dir]}/postgresql.conf" do
+  source "postgresql.conf.erb"
+  owner node[:postgresql][:uid]
+  group node[:postgresql][:gid]
+  mode  0600
+  notifies :restart, "service[#{node[:postgresql][:service]}]"
 end
 
 service node[:postgresql][:service] do
