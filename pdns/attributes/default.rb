@@ -1,18 +1,20 @@
-default[:pdns][:config][:db_host]      = "127.0.0.1"
-default[:pdns][:config][:db_user]      = "pdns"
-default[:pdns][:config][:db_name]      = "pdns"
-default[:pdns][:config][:db_password]  = ""
-default[:pdns][:config][:axfr_ips]     = []
-default[:pdns][:config][:bind][:inet]  = ""
-default[:pdns][:config][:bind][:inet6] = ""
-default[:pdns][:config][:file] = "/etc/powerdns/pdns.conf"
+default[:pdns][:db_host]      = "127.0.0.1"
+default[:pdns][:db_user]      = "pdns"
+default[:pdns][:db_name]      = "pdns"
+default[:pdns][:db_password]  = ""
+default[:pdns][:axfr_ips]     = []
+default[:pdns][:bind_inet]  = ""
+default[:pdns][:bind_inet6] = ""
 
-package = "pdns"
 case platform
 when "gentoo"
-  package = "net-dns/pdns"
+  default[:pdns][:package] = "net-dns/pdns"
+  default[:pdns][:dir] = "/etc/powerdns"
 when "debian"
-  package = "pdns-server"
+  default[:pdns][:package] = "pdns-server"
+  default[:pdns][:dir] = "/etc/powerdns"
+when "freebsd"
+  # pgsql使う場合はDEFAULT_PGSQL_VER=91にする
+  default[:pdns][:package] = "dns/powerdns"
+  default[:pdns][:dir] = "/usr/local/etc/pdns"
 end
-
-default[:pdns][:package] = package
