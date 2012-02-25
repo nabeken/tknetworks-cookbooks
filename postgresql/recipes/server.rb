@@ -32,6 +32,11 @@ package node[:postgresql][:server][:package] do
   source "ports" if node[:platform] == "freebsd"
 end
 
+service node[:postgresql][:service] do
+  action :enable
+  pattern "postgres"
+end
+
 execute "postgresql-initdb" do
   command node[:postgresql][:server][:initdb_cmd]
   only_if do
@@ -69,6 +74,6 @@ template "#{node[:postgresql][:dir]}/postgresql.conf" do
 end
 
 service node[:postgresql][:service] do
-  action [:enable, :start]
+  action  :start
   pattern "postgres"
 end
