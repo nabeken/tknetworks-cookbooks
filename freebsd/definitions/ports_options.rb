@@ -2,7 +2,7 @@ define :ports_options, :options => nil do
   t = nil
   f = "/var/db/ports/#{params[:name]}/options"
 
-  directory ::File.dirname(f) do
+  d = directory ::File.dirname(f) do
     action :create
     recursive true
     only_if do
@@ -24,4 +24,8 @@ define :ports_options, :options => nil do
       Chef::Log.debug("Add #{opt} to #{params[:name]}")
     end
   end
+  Chef::Log.info("ports_options for #{params[:name]} before")
+  d.run_action(:create)
+  t.run_action(:create)
+  Chef::Log.info("ports_options for #{params[:name]} after")
 end
