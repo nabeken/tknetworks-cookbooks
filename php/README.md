@@ -3,6 +3,8 @@ Description
 
 Installs and configures PHP 5.3 and the PEAR package management system.  Also includes LWRPs for managing PEAR (and PECL) packages along with PECL channels.
 
+This cookbook is based on opscode/cookbook/php.
+
 ---
 Requirements
 ============
@@ -11,16 +13,7 @@ Platform
 --------
 
 * Debian, Ubuntu
-* CentOS, Red Hat, Fedora
-
-Cookbooks
----------
-
-* build-essential
-* xml
-* mysql
-
-These cookbooks are only used when building PHP from source.
+* FreeBSD
 
 ---
 Attributes
@@ -237,6 +230,7 @@ License and Author
 
 Author:: Seth Chisamore (<schisamo@opscode.com>)
 Author:: Joshua Timberman (<joshua@opscode.com>)
+Author:: Ken-ichi TANABE (<nabeken@tknetworks.org>)
 
 Copyright:: 2011, Opscode, Inc
 

@@ -19,6 +19,7 @@
 # limitations under the License.
 #
 
+include_recipe "postgresql::client"
 include_recipe "php::#{node['php']['install_method']}"
 
 # update the main channels

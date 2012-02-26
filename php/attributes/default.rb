@@ -23,63 +23,108 @@ lib_dir = kernel['machine'] =~ /x86_64/ ? 'lib64' : 'lib'
 default['php']['install_method'] = 'package'
 
 case node["platform"]
-when "centos", "redhat", "fedora"
-  default['php']['conf_dir']      = '/etc'
-  default['php']['ext_conf_dir']  = '/etc/php.d'
-  default['php']['fpm_user']      = 'nobody'
-  default['php']['fpm_group']     = 'nobody'
-  default['php']['ext_dir']       = "/usr/#{lib_dir}/php/modules"
 when "debian", "ubuntu"
   default['php']['conf_dir']      = '/etc/php5/cli'
   default['php']['ext_conf_dir']  = '/etc/php5/conf.d'
   default['php']['fpm_user']      = 'www-data'
   default['php']['fpm_group']     = 'www-data'
+  default['php']['fpm_service']   = 'php_fpm'
+  default['php']['uid']           = 'root'
+  default['php']['gid']           = 'root'
+when "freebsd"
+  default['php']['conf_dir']      = '/usr/local/etc'
+  default['php']['fpm_user']      = 'www'
+  default['php']['fpm_group']     = 'www'
+  default['php']['fpm_service']   = 'php_fpm'
+  default['php']['php5_gd_options']  = %w{
+    WITH_T1LIB=true
+    WITH_TRUETYPE=true
+    WITH_JIS=true
+  }
+  default['php']['php5_options']  = %w{
+    WITH_CLI=true
+    WITH_CGI=true
+    WITH_FPM=true
+    WITHOUT_APACHE=true
+    WITHOUT_AP2FILTER=true
+    WITHOUT_DEBUG=true
+    WITH_SUHOSIN=true
+    WITH_MULTIBYTE=true
+    WITH_IPV6=true
+    WITHOUT_MAILHEAD=true
+    WITHOUT_LINKTHR=true
+  }
+  default['php']['php5_mysqli_options'] = %w{
+    WITH_MYSQLND=true
+  }
+  default['php']['php5_extensions_options']  = %w{
+    WITH_BCMATH=true
+    WITH_BZ2=true
+    WITH_CALENDAR=true
+    WITH_CTYPE=true
+    WITH_CURL=true
+    WITH_DBA=true
+    WITH_DOM=true
+    WITHOUT_EXIF=true
+    WITHOUT_FILEINFO=true
+    WITH_FILTER=true
+    WITHOUT_FRIBIDI=true
+    WITHOUT_FTP=true
+    WITH_GD=true
+    WITH_GETTEXT=true
+    WITHOUT_GMP=true
+    WITH_HASH=true
+    WITH_ICONV=true
+    WITHOUT_IMAP=true
+    WITHOUT_INTERBASE=true
+    WITH_JSON=true
+    WITH_LDAP=true
+    WITH_MBSTRING=true
+    WITH_MCRYPT=true
+    WITHOUT_MSSQL=true
+    WITHOUT_MYSQL=true
+    WITH_MYSQLI=true
+    WITHOUT_ODBC=true
+    WITH_OPENSSL=true
+    WITHOUT_PCNTL=true
+    WITHOUT_PDF=true
+    WITH_PDO=true
+    WITH_PDO_SQLITE=true
+    WITH_PGSQL=true
+    WITH_PHAR=true
+    WITH_POSIX=true
+    WITHOUT_PSPELL=true
+    WITHOUT_READLINE=true
+    WITHOUT_RECODE=true
+    WITH_SESSION=true
+    WITHOUT_SHMOP=true
+    WITH_SIMPLEXML=true
+    WITHOUT_SNMP=true
+    WITHOUT_SOAP=true
+    WITH_SOCKETS=true
+    WITH_SQLITE=true
+    WITH_SQLITE3=true
+    WITHOUT_SYBASE_CT=true
+    WITHOUT_SYSVMSG=true
+    WITHOUT_SYSVSEM=true
+    WITHOUT_SYSVSHM=true
+    WITHOUT_TIDY=true
+    WITH_TOKENIZER=true
+    WITHOUT_WDDX=true
+    WITH_XML=true
+    WITH_XMLREADER=true
+    WITHOUT_XMLRPC=true
+    WITH_XMLWRITER=true
+    WITHOUT_XSL=true
+    WITHOUT_YAZ=true
+    WITH_ZIP=true
+    WITH_ZLIB=true
+  }
+  default['php']['uid']           = 'root'
+  default['php']['gid']           = 'wheel'
 else
   default['php']['conf_dir']      = '/etc/php5/cli'
   default['php']['ext_conf_dir']  = '/etc/php5/conf.d'
   default['php']['fpm_user']      = 'www-data'
   default['php']['fpm_group']     = 'www-data'
 end
-
-default['php']['url'] = 'http://us.php.net/distributions'
-default['php']['version'] = '5.3.10'
-default['php']['checksum'] = 'ee26ff003eaeaefb649735980d9ef1ffad3ea8c2836e6ad520de598da225eaab'
-default['php']['prefix_dir'] = '/usr/local'
-
-default['php']['configure_options'] = %W{--prefix=#{php['prefix_dir']}
-                                          --with-libdir=#{lib_dir}
-                                          --with-config-file-path=#{php['conf_dir']}
-                                          --with-config-file-scan-dir=#{php['ext_conf_dir']}
-                                          --with-pear
-                                          --enable-fpm
-                                          --with-fpm-user=#{php['fpm_user']}
-                                          --with-fpm-group=#{php['fpm_group']}
-                                          --with-zlib
-                                          --with-openssl
-                                          --with-kerberos
-                                          --with-bz2
-                                          --with-curl
-                                          --enable-ftp
-                                          --enable-zip
-                                          --enable-exif
-                                          --with-gd
-                                          --enable-gd-native-ttf
-                                          --with-gettext
-                                          --with-gmp
-                                          --with-mhash
-                                          --with-iconv
-                                          --with-imap
-                                          --with-imap-ssl
-                                          --enable-sockets
-                                          --enable-soap
-                                          --with-xmlrpc
-                                          --with-libevent-dir
-                                          --with-mcrypt
-                                          --enable-mbstring
-                                          --with-t1lib
-                                          --with-mysql
-                                          --with-mysqli=/usr/bin/mysql_config
-                                          --with-mysql-sock
-                                          --with-sqlite3
-                                          --with-pdo-mysql
-                                          --with-pdo-sqlite}

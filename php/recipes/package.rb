@@ -25,18 +25,50 @@ pkgs = value_for_platform(
   [ "debian", "ubuntu" ] => {
     "default" => %w{ php5-cgi php5 php5-dev php5-cli php-pear }
   },
+  [ "freebsd" ] => {
+    "default" => %w{lang/php5 devel/pear lang/php5-extensions}
+  },
   "default" => %w{ php5-cgi php5 php5-dev php5-cli php-pear }
 )
+
+ports_options "php5" do
+  options node[:php][:php5_options]
+  only_if do
+    node.platform == "freebsd"
+  end
+end
+
+ports_options "php5-extensions" do
+  options node[:php][:php5_extensions_options]
+  only_if do
+    node.platform == "freebsd"
+  end
+end
+
+ports_options "php5-gd" do
+  options node[:php][:php5_gd_options]
+  only_if do
+    node.platform == "freebsd"
+  end
+end
+
+ports_options "php5-mysqli" do
+  options node[:php][:php5_mysqli_options]
+  only_if do
+    node.platform == "freebsd"
+  end
+end
 
 pkgs.each do |pkg|
   package pkg do
     action :install
+    source "ports" if node[:platform] == "freebsd"
   end
 end
 
 template "#{node['php']['conf_dir']}/php.ini" do
   source "php.ini.erb"
-  owner "root"
-  group "root"
+  owner node[:php][:uid]
+  group node[:php][:gid]
   mode "0644"
 end

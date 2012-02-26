@@ -2,19 +2,17 @@ maintainer        "Opscode, Inc."
 maintainer_email  "cookbooks@opscode.com"
 license           "Apache 2.0"
 description       "Installs and maintains php and php modules"
-version           "1.0.2"
+version           "1.0.3"
 
-depends "build-essential"
-depends "xml"
-depends "mysql"
+depends "freebsd"
+depends "postgresql"
 
-%w{ debian ubuntu centos redhat fedora }.each do |os|
+%w{ debian freebsd }.each do |os|
   supports os
 end
 
 recipe "php", "Installs php"
 recipe "php::package", "Installs php using packages."
-recipe "php::source", "Installs php from source."
 recipe "php::module_apc", "Install the php5-apc package"
 recipe "php::module_curl", "Install the php5-curl package"
 recipe "php::module_fileinfo", "Install the php5-fileinfo package"
