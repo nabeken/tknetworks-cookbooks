@@ -24,8 +24,6 @@ define :ports_options, :options => nil do
       Chef::Log.debug("Add #{opt} to #{params[:name]}")
     end
   end
-  Chef::Log.info("ports_options for #{params[:name]} before")
   d.run_action(:create)
   t.run_action(:create)
-  Chef::Log.info("ports_options for #{params[:name]} after")
 end
