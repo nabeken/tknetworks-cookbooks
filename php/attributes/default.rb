@@ -28,14 +28,14 @@ when "debian", "ubuntu"
   default['php']['ext_conf_dir']  = '/etc/php5/conf.d'
   default['php']['fpm_user']      = 'www-data'
   default['php']['fpm_group']     = 'www-data'
-  default['php']['fpm_service']   = 'php_fpm'
+  default['php']['fpm_service']   = 'php-fpm'
   default['php']['uid']           = 'root'
   default['php']['gid']           = 'root'
 when "freebsd"
   default['php']['conf_dir']      = '/usr/local/etc'
   default['php']['fpm_user']      = 'www'
   default['php']['fpm_group']     = 'www'
-  default['php']['fpm_service']   = 'php_fpm'
+  default['php']['fpm_service']   = 'php-fpm'
   default['php']['php5_gd_options']  = %w{
     WITH_T1LIB=true
     WITH_TRUETYPE=true
