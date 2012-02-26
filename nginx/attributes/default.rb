@@ -32,6 +32,8 @@ when "debian","ubuntu"
   default[:nginx][:init_style] = "runit"
   default[:nginx][:nxensite]   = "/usr/sbin/nxensite"
   default[:nginx][:nxdissite]  = "/usr/sbin/nxdissite"
+  default[:nginx][:fastcgi_params] = "/etc/nginx/fastcgi_params"
+  default[:nginx][:fastcgi_pass] = "127.0.0.1:9000"
   default[:nginx][:worker_processes] = cpu[:total]
   default[:nginx][:location][:root_dir] = "/var/www/nginx-default"
 when "freebsd"
@@ -43,6 +45,8 @@ when "freebsd"
   default[:nginx][:binary]     = "/usr/local/sbin/nginx"
   default[:nginx][:nxensite]   = "/usr/local/sbin/nxensite"
   default[:nginx][:nxdissite]  = "/usr/local/sbin/nxdissite"
+  default[:nginx][:fastcgi_params] = "/usr/local/etc/nginx/fastcgi_params"
+  default[:nginx][:fastcgi_pass] = "127.0.0.1:9000"
   default[:nginx][:worker_processes] = (virtualization[:system] == "jail" and
                                         virtualization[:role] == "guest") ? 1 : cpu[:total]
   default[:nginx][:location][:root_dir] = "/var/www/nginx-default"

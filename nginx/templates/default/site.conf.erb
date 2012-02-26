@@ -21,6 +21,13 @@ server {
   <% if @params[:use_passenger] %>
   root /var/www/<%= @params[:name] %>/app/public;
   passenger_enabled on;
+  <% else @params[:use_php_fpm] %>
+  location ~ \.php$ {
+    fastcgi_pass  <%= node[:nginx][:fastcgi_pass] %>;
+    fastcgi_index index.php;
+    include <%= node[:nginx][:fastcgi_params] %>;
+    fastcgi_param SCRIPT_FILENAME /var/www/<%= @params[:name] %>/htdocs$fastcgi_script_name;
+  }
   <% end %>
   # location settings should be in nginx.conf
   # location / {

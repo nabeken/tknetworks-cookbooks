@@ -20,7 +20,9 @@
 
 define :nginx_site,
        :enable        => true,
+       :create_htdocs => true,
        :use_passenger => false,
+       :use_php_fpm   => false,
        :port          => nil,
        :use_https     => false,
        :ssl_cert      => nil,
@@ -52,9 +54,9 @@ define :nginx_site,
 
   dirs = [
     "/var/www/#{params[:name]}",
-    "/var/www/#{params[:name]}/htdocs",
     "#{node[:nginx][:log_dir]}/#{params[:name]}"
   ]
+  dirs.push "/var/www/#{params[:name]}/htdocs" if params[:create_htdocs]
   dirs.each do |d|
     directory d do
       owner node[:nginx][:user]
@@ -78,6 +80,17 @@ define :nginx_site,
       notifies :restart, resources(:service => "nginx")
       only_if do
         ::File.symlink?("#{node[:nginx][:dir]}/sites-enabled/#{params[:name]}")
+      end
+    end
+  end
+
+  if params[:use_php_fpm]
+    # php5-fpmサービスを登録する
+    begin
+      resources("service[#{node[:php][:fpm_service]}]")
+    rescue
+      service node[:php][:fpm_service] do
+        action [:enable, :start]
       end
     end
   end

@@ -12,6 +12,7 @@ recipe "nginx::source", "Installs nginx from source and sets up configuration wi
 end
 
 depends "freebsd"
+depends "php"
 
 attribute "nginx/dir",
   :display_name => "Nginx Directory",
