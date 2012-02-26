@@ -19,6 +19,14 @@
 # limitations under the License.
 #
 
+ports_options "nginx" do
+  options node[:nginx][:options]
+  only_if do
+    node.platform == "freebsd"
+  end
+  notifies :install, "package[#{node[:nginx][:package]}]", :immediately
+end
+
 if node[:nginx][:passenger] == "on"
   ports_options "rubygem-passenger" do
     options %w{
@@ -31,20 +39,15 @@ if node[:nginx][:passenger] == "on"
       node.platform == "freebsd"
     end
   end
-  package "www/rubygem-passenger" do
+  passenger = package "www/rubygem-passenger" do
     source "ports"
     only_if do
       node[:platform] == "freebsd"
     end
-    notifies :restart, "service[nginx]"
+    notifies :create, "template[nginx.conf]", :immediately
   end
-end
-
-ports_options "nginx" do
-  options node[:nginx][:options]
-  only_if do
-    node.platform == "freebsd"
-  end
+  # install gem immediately
+  passenger.run_action(:install)
 end
 
 package node.nginx.package do
@@ -76,6 +79,13 @@ end
   end
 end
 
+template "#{node[:nginx][:dir]}/sites-available/default" do
+  source "default-site.erb"
+  owner "root"
+  group node[:nginx][:gid]
+  mode 0644
+end
+
 template "nginx.conf" do
   path "#{node[:nginx][:dir]}/nginx.conf"
   source "nginx.conf.erb"
@@ -84,21 +94,16 @@ template "nginx.conf" do
   mode 0644
   notifies :restart, "service[nginx]", :delayed
   if node[:nginx][:passenger] == "on"
-    passenger_root = `passenger-config --root`.strip
-    unless passenger_root.empty? && passenger_root.start_with("/")
+    # avoid Errno::ENOENT when there is no passenger-config
+    passenger_root = `passenger-config --root || :`.strip
+    unless passenger_root.empty? && passenger_root.start_with?("/")
       variables :passenger_root => passenger_root
     end
   end
 end
 
-template "#{node[:nginx][:dir]}/sites-available/default" do
-  source "default-site.erb"
-  owner "root"
-  group node[:nginx][:gid]
-  mode 0644
-end
-
 service "nginx" do
   supports :status => false, :restart => true, :reload => true
   action [ :enable, :start ]
+  ignore_failure true
 end

@@ -14,14 +14,18 @@ server {
 
   access_log  <%= node[:nginx][:log_dir] %>/<%= @params[:name] %>/access.log;
 
-  # location settings should be in nginx.conf
-  #location / {
-  #  root   /var/www/<%= @params[:name] %>/htdocs;
-  #  index  index.html index.htm;
-  #}
+  location ~ /\.ht {
+    deny all;
+    internal;
+  }
   <% if @params[:use_passenger] %>
   root /var/www/<%= @params[:name] %>/app/public;
   passenger_enabled on;
   <% end %>
+  # location settings should be in nginx.conf
+  # location / {
+  #   root   /var/www/<%= @params[:name] %>/htdocs;
+  #   index  index.html index.htm;
+  # }
   include  /var/www/<%= @params[:name] %>/nginx.conf;
 }
