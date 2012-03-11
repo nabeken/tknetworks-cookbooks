@@ -29,8 +29,19 @@ user "pdns" do
   system true
 end
 
+execute "pdns-add-flags" do
+  command %Q[echo pdns_flags=\\"${pdns_flags} --daemon=yes\\" >> /etc/rc.conf]
+  only_if do
+    node[:platform] == "freebsd" &&
+    !File.open('/etc/rc.conf').readlines.any? { |l|
+      l.start_with?("pdns_flags=")
+    }
+  end
+end
+
 service "pdns" do
   action :enable
+  notifies :run, "execute[pdns-add-flags]", :immediately
 end
 
 pg_hba "pdns-local" do
