@@ -4,7 +4,6 @@ case platform
 when "debian"
   nagios_client_pkgs << "nagios-plugins"
   nagios_client_pkgs << "nagios-nrpe-server"
-  nagios_client_pkgs << "nagios-nrpe-plugin"
 when "gentoo"
   nagios_client_pkgs << "net-analyzer/nagios-plugins"
   nagios_client_pkgs << "net-analyzer/nagios-nrpe"
