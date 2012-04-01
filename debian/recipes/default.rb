@@ -1,4 +1,4 @@
-return if node.platform != "debian"
+return if node[:platform] != "debian"
 
 execute "apt-get-update" do
   command "/usr/bin/apt-get -q update"
@@ -20,7 +20,7 @@ end
 debian_aptline "opscode" do
   url  "http://apt.opscode.com"
   repo %w{main}
-  release "#{node.debian.release}-0.10"
+  release "#{node[:debian][:release]}-0.10"
 end
 
 # remove execute bits
@@ -33,6 +33,7 @@ end
   rsync
   strace
   zsh
+  less
 }.each do |pkg|
   package pkg do
     action :install
