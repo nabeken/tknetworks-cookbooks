@@ -27,3 +27,21 @@ define :debian_aptline, :url => nil, :path => nil, :repo => nil, :release => nil
 
   Chef::Log.info("registering aptline #{params[:name]}")
 end
+
+define :debian_pinning, :pin => nil, :priority => 500 do
+  t = nil
+  file = "preferences.d/#{params[:name]}"
+
+  begin
+    t = resources(:template => "/etc/apt/#{file}")
+  rescue
+    t = template "/etc/apt/#{file}" do
+          source "etc/apt/preference"
+          owner "root"
+          group "root"
+          mode  0644
+          cookbook "debian"
+          variables :params => params
+    end
+  end
+end
