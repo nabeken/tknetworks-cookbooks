@@ -22,12 +22,7 @@ default[:postgresql][:ssl] = false
 case platform
 when "debian"
 
-  if platform_version.to_f == 5.0
-    default[:postgresql][:version] = "8.3"
-  elsif platform_version =~ /squeeze/
-    default[:postgresql][:version] = "8.4"
-  end
-
+  default[:postgresql][:version] = "9.1"
   default[:postgresql][:dir] = "/etc/postgresql/#{node[:postgresql][:version]}/main"
   default[:postgresql][:service] = "postgresql"
 

@@ -30,11 +30,23 @@ node.save unless Chef::Config[:solo]
 package node[:postgresql][:server][:package] do
   action :install
   source "ports" if node[:platform] == "freebsd"
+  options "-t #{node[:debian][:release]}-backports" if node[:platform] == "debian"
 end
+
+include_recipe "postgresql::client"
 
 service node[:postgresql][:service] do
   action :enable
   pattern "postgres"
+end
+
+execute "postgresql-createcluster" do
+  command "/usr/bin/pg_createcluster 9.1 main --start"
+  environment :LANG => "C"
+  notifies :restart, "service[#{node[:postgresql][:service]}]"
+  only_if do
+    node[:platform] == "debian" && !File.exists?("/etc/postgresql/9.1")
+  end
 end
 
 execute "postgresql-initdb" do

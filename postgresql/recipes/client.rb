@@ -19,10 +19,19 @@
 # limitations under the License.
 #
 
+# pinning libpq-dev from squeeze-backports
+if node[:platform] == "debian"
+  debian_pinning "libpq-dev" do
+    pin "release squeeze-backports"
+    priority 500
+  end
+end
+
 node[:postgresql][:client][:packages].each do |pg_pack|
   package pg_pack do
     action :install
     source "ports" if node[:platform] == "freebsd"
+    options "-t #{node[:debian][:release]}-backports" if node[:platform] == "debian"
   end
 end
 

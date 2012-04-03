@@ -18,7 +18,7 @@ include_attribute "postgresql"
 case platform
 when "debian"
 
-  default[:postgresql][:client][:packages] = %w{postgresql-client libpq-dev make}
+  default[:postgresql][:client][:packages] = %w{libpq-dev postgresql-client-9.1 make}
   default[:postgresql][:uid] = "postgres"
   default[:postgresql][:gid] = "postgres"
 

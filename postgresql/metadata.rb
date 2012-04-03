@@ -13,3 +13,4 @@ recipe            "postgresql::server", "Installs postgresql server packages, te
 end
 
 depends "openssl"
+depends "debian"

@@ -18,7 +18,7 @@
 #
 
 # In FreeBSD set DEFAULT_PGSQL_VER=91
-execute "postgresql-set-default-vgsql-ver" do
+e = execute "postgresql-set-default-vgsql-ver" do
   command "echo DEFAULT_PGSQL_VER=#{node[:postgresql][:version].gsub(/\./, "")}" +
           " >> /etc/make.conf"
   only_if do
@@ -28,4 +28,4 @@ execute "postgresql-set-default-vgsql-ver" do
     }
   end
 end
-include_recipe "postgresql::client"
+e.run_action(:run) if node[:platform] == "freebsd"

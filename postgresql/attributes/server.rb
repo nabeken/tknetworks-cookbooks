@@ -20,7 +20,7 @@ default[:postgresql][:server][:max_connections] = 30
 case platform
 when "debian"
 
-  default[:postgresql][:server][:package] = "postgresql"
+  default[:postgresql][:server][:package] = "postgresql-9.1"
 
 when "freebsd"
 
