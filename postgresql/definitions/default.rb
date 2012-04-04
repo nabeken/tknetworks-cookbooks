@@ -16,7 +16,7 @@
 
 # params[:name]は使わない
 define :pg_hba,
-       :type     => :local,
+       :ctype    => :local,
        :database => :sameuser,
        :user     => nil,
        :address  => nil,
@@ -46,10 +46,10 @@ define :pg_hba,
   # hostssl    database  user  CIDR-address  auth-method  [auth-options]
   # hostnossl  database  user  CIDR-address  auth-method  [auth-options]
 
-  case params[:type]
+  case params[:ctype]
   when :local
     t.variables[:records].push(
-      :type     => params[:type],
+      :type     => params[:ctype],
       :database => params[:database],
       :user     => params[:user],
       :address  => "",
@@ -64,7 +64,7 @@ define :pg_hba,
     end
     addresses.each do |addr|
       t.variables[:records].push(
-        :type     => params[:type],
+        :type     => params[:ctype],
         :database => params[:database],
         :user     => params[:user],
         :address  => addr,
@@ -72,7 +72,7 @@ define :pg_hba,
       )
     end
   else
-    raise "type must be local, host, hostssl or hostnossl"
+    raise "ctype must be local, host, hostssl or hostnossl"
   end
 end
 
