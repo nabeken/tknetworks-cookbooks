@@ -15,14 +15,30 @@
 #
 include_recipe "postgresql::server"
 
-if node.platform == "gentoo"
-  portage_keywords node.pdns.package do
+if node[:platform] == "gentoo"
+  portage_keywords node[:pdns][:package] do
     keyword "~amd64"
   end
 end
 
-package node.pdns.package do
-  action :install
+if node[:platform] != "debian"
+  package node[:pdns][:package] do
+    action :install
+  end
+else
+  pdns_deb = "/var/cache/apt/archives/#{::File.basename(node[:pdns][:deb_url])}"
+  e = execute "pdns-wget-pdns-deb" do
+    command "wget #{node[:pdns][:deb_url]} -P #{node[:debian][:deb_archives]}"
+    notifies :install, "dpkg_package[pdns-static]"
+    only_if do
+      !::File.exists?(pdns_deb)
+    end
+  end
+  e.run_action(:run)
+  dpkg_package "pdns-static" do
+    source pdns_deb
+    action :install
+  end
 end
 
 user "pdns" do
@@ -45,13 +61,13 @@ service "pdns" do
 end
 
 pg_hba "pdns-local" do
-  type :local
+  ctype :local
   user "pdns"
   auth_method :ident
 end
 
 pg_hba "pdns-loopback" do
-  type :host
+  ctype :host
   user "pdns"
   auth_method :trust
 end
