@@ -83,6 +83,7 @@ end
 sql_files = %W{
   pgsql-pdns.sql
   pgsql-pdns-dnssec.sql
+  pgsql-pdns-domains.sql
 }
 
 sql_files.each do |sql|
@@ -101,6 +102,17 @@ createuser "pdns"
 createdb "pdns"
 
 # create table
+bash "pdns-init-database" do
+  user "pdns"
+  code <<-EOC
+cat #{node[:pdns][:dir]}/{#{sql_files.join(",")}} | psql pdns
+EOC
+  only_if do
+    `su pdns -c "echo '\\d' | psql -A -t -U pdns pdns | wc -l"`.strip == "1"
+  end
+end
+
+# create initial domains
 bash "pdns-init-database" do
   user "pdns"
   code <<-EOC
