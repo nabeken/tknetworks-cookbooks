@@ -6,7 +6,7 @@ release = case platform_version
           when /^6\./
               "squeeze"
           else
-              raise "Unknown codename"
+             "unknown"
           end
 
 default[:debian][:release] = release
