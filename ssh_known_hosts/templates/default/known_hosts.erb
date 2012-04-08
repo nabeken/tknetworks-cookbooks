@@ -1,0 +1,4 @@
+# THIS FILE IS MAINTAINED BY CHEF, DO NOT MODIFY AS IT WILL BE OVERWRITTEN
+<% @pubkeys.each do |host, key| %>
+<%= host %> ssh-rsa <%= key %>
+<% end %>
