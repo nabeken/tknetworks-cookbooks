@@ -5,6 +5,7 @@ default[:pdns][:db_password]  = ""
 default[:pdns][:axfr_ips]     = []
 default[:pdns][:bind_inet]  = ""
 default[:pdns][:bind_inet6] = ""
+default[:pdns][:home_dir] = "/home/pdns"
 
 case platform
 when "gentoo"

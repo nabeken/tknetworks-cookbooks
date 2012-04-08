@@ -41,9 +41,19 @@ else
   end
 end
 
+# maybe created by installing
 user "pdns" do
-  action :create
+  action [:create, :manage]
   system true
+  manage_home true
+  home node[:pdns][:home_dir]
+end
+
+directory node[:etc][:passwd][:pdns][:dir] do
+  action :create
+  owner "pdns"
+  group "pdns"
+  mode 0700
 end
 
 execute "pdns-add-flags" do
