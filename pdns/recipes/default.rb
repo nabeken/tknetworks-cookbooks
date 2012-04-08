@@ -28,7 +28,7 @@ if node[:platform] != "debian"
 else
   pdns_deb = "/var/cache/apt/archives/#{::File.basename(node[:pdns][:deb_url])}"
   e = execute "pdns-wget-pdns-deb" do
-    command "wget #{node[:pdns][:deb_url]} -P #{node[:debian][:deb_archives]}"
+    command "wget #{node[:pdns][:deb_url]} -P #{node[:debian][:deb_archives]} || rm -f #{pdns_deb}"
     notifies :install, "dpkg_package[pdns-static]"
     only_if do
       !::File.exists?(pdns_deb)
@@ -42,6 +42,7 @@ else
 end
 
 user "pdns" do
+  action :create
   system true
 end
 
