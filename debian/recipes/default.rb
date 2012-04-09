@@ -34,6 +34,7 @@ end
   strace
   zsh
   less
+  git-core
 }.each do |pkg|
   package pkg do
     action :install
