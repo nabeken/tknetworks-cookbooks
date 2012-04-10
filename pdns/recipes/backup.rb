@@ -39,3 +39,11 @@ git "#{node[:etc][:passwd][:pdns][:dir]}/pdns-backup" do
   user "pdns"
   group "pdns"
 end
+
+cron "pdns-backup" do
+  command "#{node[:etc][:passwd][:pdns][:dir]}/pdns-backup/bin/pdns-backup.sh"
+  hour   5
+  minute 30
+  mailto node[:pdns][:backup][:mailto]
+  user "pdns"
+end
