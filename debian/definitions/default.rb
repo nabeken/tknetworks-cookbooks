@@ -1,4 +1,22 @@
-define :debian_aptline, :url => nil, :path => nil, :repo => nil, :release => nil do
+define :debian_aptline, :url     => nil,
+                        :path    => nil,
+                        :repo    => nil,
+                        :release => nil,
+                        :gpg_key_id  => nil,
+                        :gpg_key_url => nil do
+  # registering gpg key
+  if !params[:gpg_key_id].nil? && !params[:gpg_key_url].nil?
+    bash "debian-apt-key-add" do
+      code <<-EOC
+wget -O- #{params[:gpg_key_url]} | apt-key add -
+EOC
+      only_if do
+        `apt-key list | grep #{params[:gpg_key_id]} | wc -l`.strip == "0"
+      end
+      notifies :run, "execute[apt-get-update]", :immediately
+    end
+  end
+
   t = nil
 
   file = "sources.list.d/#{params[:name]}.list"
