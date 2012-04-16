@@ -19,41 +19,61 @@
 # limitations under the License.
 #
 
-ports_options "nginx" do
-  options node[:nginx][:options]
-  only_if do
-    node.platform == "freebsd"
+if node[:platform] == "freebsd"
+  ports_options "nginx" do
+    options node[:nginx][:options]
+    notifies :install, "package[#{node[:nginx][:package]}]", :immediately
   end
-  notifies :install, "package[#{node[:nginx][:package]}]", :immediately
 end
 
 if node[:nginx][:passenger] == "on"
-  ports_options "rubygem-passenger" do
-    options %w{
-      WITH_NGINXPORT=true
-      WITHOUT_APACHEPORT=true
-      WITHOUT_DEBUG=true
-      WITHOUT_SYMLINK=true
-    }
-    only_if do
-      node.platform == "freebsd"
+  case node[:platform]
+  when "freebsd"
+    ports_options "rubygem-passenger" do
+      options %w{
+        WITH_NGINXPORT=true
+        WITHOUT_APACHEPORT=true
+        WITHOUT_DEBUG=true
+        WITHOUT_SYMLINK=true
+      }
+    end
+    passenger = package "www/rubygem-passenger" do
+      source "ports"
+      notifies :create, "template[nginx.conf]", :immediately
+    end
+    # install gem immediately
+    passenger.run_action(:install)
+
+    package node[:nginx][:package] do
+      action :install
+      source "ports"
+    end
+
+  when "debian"
+    package "ruby-passenger" do
+      action :install
+    end
+
+    # install nginx-passenger not nginx
+    package "nginx-passenger" do
+      action :install
+      notifies :create, "template[nginx.conf]"
+    end
+
+  else
+    package node[:nginx][:package] do
+      action :install
+      source "ports"
     end
   end
-  passenger = package "www/rubygem-passenger" do
+
+else
+  package node[:nginx][:package] do
+    action :install
     source "ports"
-    only_if do
-      node[:platform] == "freebsd"
-    end
-    notifies :create, "template[nginx.conf]", :immediately
   end
-  # install gem immediately
-  passenger.run_action(:install)
 end
 
-package node.nginx.package do
-  action :install
-  source "ports" if node.platform == "freebsd"
-end
 
 [
   "#{node[:nginx][:dir]}/sites-enabled/",
@@ -94,10 +114,10 @@ template "nginx.conf" do
   mode 0644
   notifies :restart, "service[nginx]", :delayed
   if node[:nginx][:passenger] == "on"
-    # avoid Errno::ENOENT when there is no passenger-config
-    passenger_root = `passenger-config --root || :`.strip
-    unless passenger_root.empty? && passenger_root.start_with?("/")
-      variables :passenger_root => passenger_root
+    if node[:nginx][:passenger_root].respond_to?(:call)
+      variables :passenger_root => node[:nginx][:passenger_root].call
+    else
+      variables :passenger_root => node[:nginx][:passenger_root]
     end
   end
 end

@@ -36,6 +36,7 @@ when "debian","ubuntu"
   default[:nginx][:fastcgi_pass] = "127.0.0.1:9000"
   default[:nginx][:worker_processes] = cpu[:total]
   default[:nginx][:location][:root_dir] = "/var/www/nginx-default"
+  default[:nginx][:passenger_root] = "/usr/lib/phusion-passenger"
 when "freebsd"
   default[:nginx][:package]    = "www/nginx"
   default[:nginx][:dir]        = "/usr/local/etc/nginx"
@@ -134,6 +135,7 @@ else
   default[:nginx][:nxensite]   = "/usr/sbin/nxensite"
   default[:nginx][:nxdissite]  = "/usr/sbin/nxdissite"
   default[:nginx][:location][:root_dir] = "/var/www/nginx-default"
+  default[:nginx][:passenger_root] = proc { `passenger-config --root || :`.strip }
 end
 
 default[:nginx][:gzip] = "on"
