@@ -8,19 +8,36 @@ COOKBOOKS
 
 I'm providing following cookbooks. These cookbooks are licensed under Apache License 2.0 (same as Chef).
 
- * bacula
- * debian
- * nagios
- * quagga
- * unbound
- * node
- * openvpn
- * portage
- * gentoo
  * apache2
- * samba
+ * bacula
+ * dbee
+ * debian
+ * dovecot
  * freebsd
- * ntp
+ * gentoo
+ * gitolite
  * istgt
- * rsync
+ * kvm
+ * lxc
+ * mongodb
+ * nagios
  * nfs
+ * nginx
+ * node
+ * ntp
+ * openssl
+ * openvpn
+ * pdns
+ * php
+ * portage
+ * postfix
+ * postgresql
+ * poweradmin
+ * quagga
+ * rabbitmq
+ * rsync
+ * samba
+ * ssh_known_hosts
+ * stunnel
+ * unbound
+ * xen
