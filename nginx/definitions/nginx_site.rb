@@ -83,15 +83,4 @@ define :nginx_site,
       end
     end
   end
-
-  if params[:use_php_fpm]
-    # php5-fpmサービスを登録する
-    begin
-      resources("service[#{node[:php][:fpm_service]}]")
-    rescue
-      service node[:php][:fpm_service] do
-        action [:enable, :start]
-      end
-    end
-  end
 end
