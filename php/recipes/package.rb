@@ -23,7 +23,7 @@ pkgs = value_for_platform(
     "default" => %w{ php53 php53-devel php53-cli php-pear }
   },
   [ "debian", "ubuntu" ] => {
-    "default" => %w{ php5-cgi php5 php5-dev php5-cli php-pear }
+    "default" => %w{ php5-fpm php5-cgi php5 php5-dev php5-cli php-pear }
   },
   [ "freebsd" ] => {
     "default" => %w{lang/php5 devel/pear lang/php5-extensions}
@@ -31,31 +31,21 @@ pkgs = value_for_platform(
   "default" => %w{ php5-cgi php5 php5-dev php5-cli php-pear }
 )
 
-ports_options "php5" do
-  options node[:php][:php5_options]
-  only_if do
-    node.platform == "freebsd"
+if node[:platform] == "freebsd"
+  ports_options "php5" do
+    options node[:php][:php5_options]
   end
-end
 
-ports_options "php5-extensions" do
-  options node[:php][:php5_extensions_options]
-  only_if do
-    node.platform == "freebsd"
+  ports_options "php5-extensions" do
+    options node[:php][:php5_extensions_options]
   end
-end
 
-ports_options "php5-gd" do
-  options node[:php][:php5_gd_options]
-  only_if do
-    node.platform == "freebsd"
+  ports_options "php5-gd" do
+    options node[:php][:php5_gd_options]
   end
-end
 
-ports_options "php5-mysqli" do
-  options node[:php][:php5_mysqli_options]
-  only_if do
-    node.platform == "freebsd"
+  ports_options "php5-mysqli" do
+    options node[:php][:php5_mysqli_options]
   end
 end
 
