@@ -10,6 +10,7 @@ when "freebsd"
 when "debian"
   default[:poweradmin][:packages] = %w{
     php-mdb2-driver-pgsql
+    php5-mcrypt
   }
   default[:poweradmin][:install_dir] = "/var/www/poweradmin"
 end
