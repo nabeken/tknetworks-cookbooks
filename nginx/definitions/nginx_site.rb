@@ -34,6 +34,27 @@ define :nginx_site,
               "#{node[:nginx][:dir]}/ssl/#{params[:name]}.crt"
   ssl_key = params[:ssl_key] ||
               "#{node[:nginx][:dir]}/ssl/#{params[:name]}.key"
+
+  begin
+    cert = Chef::EncryptedDataBagItem.load('certs', params[:name].gsub('.', '_'))
+    file ssl_cert do
+      owner node[:nginx][:user]
+      group node[:nginx][:gid]
+      mode  "0644"
+      notifies :restart, "service[nginx]"
+      content cert["cert"]
+    end
+    file ssl_key do
+      owner node[:nginx][:user]
+      group node[:nginx][:gid]
+      mode  "0640"
+      notifies :restart, "service[nginx]"
+      content cert["key2"]
+    end
+  rescue Net::HTTPServerException
+    Chef::Log.info("certificate for #{params[:name]} is not found")
+  end
+
   begin
     t = resources("template[#{f}]")
   rescue
