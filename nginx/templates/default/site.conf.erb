@@ -1,6 +1,8 @@
 server {
   listen   [::]:<%= @port %>;
+  <% if node[:os] != "linux" %>
   listen   <%= @port %>;
+  <% end %>
   <% if @params[:use_https] %>
   ssl                         on;
   ssl_certificate             <%= @ssl_cert %>;
