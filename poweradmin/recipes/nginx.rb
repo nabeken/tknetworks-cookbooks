@@ -19,9 +19,9 @@
 # limitations under the License.
 #
 
-include_recipe "php::fpm"
 include_recipe "nginx"
 include_recipe "poweradmin"
+include_recipe "php::fpm"
 
 nginx_site node[:poweradmin][:vhost] do
   use_php_fpm true
