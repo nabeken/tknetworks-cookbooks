@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+require 'tempfile'
+
 # params[:name]は使わない
 define :pg_hba,
        :ctype    => :local,
@@ -80,7 +82,8 @@ define :createuser,
        :createdb   => true,
        :createrole => false,
        :login      => true,
-       :superuser  => false do
+       :superuser  => false,
+       :password   => nil do
   args = {
     :createdb   => {true => "--createdb",   false => "--no-createdb"},
     :createrole => {true => "--createrole", false => "--no-createrole"},
@@ -92,11 +95,29 @@ define :createuser,
     cmd += " #{args[k][params[k]]}"
   end
 
+  ruby_block "postgresql-alter-role-#{params[:name]}" do
+    action :nothing
+    block do
+      sql = Tempfile.open("alter-role-#{params[:name]}.sql")
+      begin
+        sql.puts "ALTER ROLE #{params[:name]} WITH ENCRYPTED PASSWORD '#{params[:password]}';"
+        sql.close
+        `cat #{sql.path} | su #{node[:postgresql][:uid]} -c \"psql -U postgres\"`
+        sql.unlink
+      rescue
+        sql.close!
+      end
+    end
+  end
+
   execute "postgresql-createuser-#{params[:name]}" do
     user node[:postgresql][:uid]
     command "#{cmd} #{params[:name]}"
     not_if do
       `su #{node[:postgresql][:uid]} -c "echo \\"SELECT count(*) FROM pg_roles WHERE rolname = '#{params[:name]}';\\" | psql -A -t -U #{node[:postgresql][:uid]} postgres"`.strip == "1"
+    end
+    if params[:password]
+      notifies :create, "ruby_block[postgresql-alter-role-#{params[:name]}]"
     end
   end
 end
