@@ -95,7 +95,7 @@ end
 pg_hba "pdns-loopback" do
   ctype :host
   user "pdns"
-  auth_method :trust
+  auth_method :md5
 end
 
 template "#{node.pdns.dir}/pdns.conf" do
@@ -122,7 +122,9 @@ sql_files.each do |sql|
 end
 
 # createuser
-createuser "pdns"
+createuser "pdns" do
+  password node[:pdns][:db_password] unless node[:pdns][:db_password].empty?
+end
 
 # createdb
 createdb "pdns"
