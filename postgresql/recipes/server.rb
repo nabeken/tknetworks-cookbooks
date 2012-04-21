@@ -42,7 +42,7 @@ end
 
 execute "postgresql-createcluster" do
   command "/usr/bin/pg_createcluster 9.1 main --start"
-  environment :LANG => "C"
+  environment({"LANG" => "C"})
   notifies :restart, "service[#{node[:postgresql][:service]}]"
   only_if do
     node[:platform] == "debian" && !File.exists?("/etc/postgresql/9.1")
