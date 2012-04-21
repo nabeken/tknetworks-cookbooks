@@ -26,31 +26,46 @@ if node[:platform] != "debian"
     action :install
   end
 else
-  pdns_deb = "/var/cache/apt/archives/#{::File.basename(node[:pdns][:deb_url])}"
+  pdns_deb_file = "pdns-static_#{node[:pdns][:deb_version]}_#{node[:debian][:arch]}.deb"
+  pdns_deb = "/var/cache/apt/archives/#{pdns_deb_file}"
+
   e = execute "pdns-wget-pdns-deb" do
-    command "wget #{node[:pdns][:deb_url]} -P #{node[:debian][:deb_archives]} || rm -f #{pdns_deb}"
-    notifies :install, "dpkg_package[pdns-static]"
+    command "wget #{node[:pdns][:deb_baseurl]}/#{pdns_deb_file} -P #{node[:debian][:deb_archives]} || rm -f #{pdns_deb}"
     only_if do
       !::File.exists?(pdns_deb)
     end
   end
   e.run_action(:run)
-  dpkg_package "pdns-static" do
+
+  d = dpkg_package "pdns-static" do
     source pdns_deb
     action :install
   end
+  d.run_action(:install)
+
 end
 
-# maybe created by installing
-user "pdns" do
-  action [:create, :manage]
+u = user "pdns" do
+  action :create
   system true
   manage_home true
   home node[:pdns][:home_dir]
+  notifies :reload, "ohai[pdns-ohai-reload]", :immediately
+end
+u.run_action(:create)
+
+o = ohai "pdns-ohai-reload" do
+    action :reload
+    plugin "passwd"
+end
+
+if u.updated_by_last_action?
+  o.run_action(:reload)
+  # we need run_action twice to get node[:etc][:passwd][:pdns], why?
+  o.run_action(:reload)
 end
 
 directory node[:etc][:passwd][:pdns][:dir] do
-  action :create
   owner "pdns"
   group "pdns"
   mode 0700
