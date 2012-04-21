@@ -9,4 +9,5 @@ version          "0.0.1"
   supports os
 end
 
+depends "pdns"
 depends "nginx"

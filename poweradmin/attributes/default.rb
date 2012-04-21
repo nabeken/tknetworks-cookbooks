@@ -1,5 +1,8 @@
 default[:poweradmin][:git_repository] = "git://github.com/poweradmin/poweradmin.git"
 default[:poweradmin][:version] = "v2.1.5"
+default[:poweradmin][:dns_hostmaster] = "hostmaster.example.com"
+default[:poweradmin][:dns_ns1] = "ns1.example.com"
+default[:poweradmin][:dns_ns2] = "ns2.example.com"
 
 case platform
 when "freebsd"
