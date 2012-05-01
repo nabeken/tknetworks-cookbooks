@@ -67,7 +67,7 @@ define :openvpn_interface,
        :inet  => nil,
        :inet6 => nil,
        :dev   => nil,
-       :extra_commands => nil do
+       :extra_commands => [] do
 
   if node[:platform] != "openbsd"
     raise "openvpn_interface is only for OpenBSD"
@@ -79,12 +79,6 @@ define :openvpn_interface,
 
   if params[:dev].nil?
     raise "dev is required"
-  end
-
-  if params[:extra_commands].nil?
-    extra_commands = []
-  else
-    extra_commands = params[:extra_commands]
   end
 
   begin
@@ -99,7 +93,7 @@ define :openvpn_interface,
             :config => "#{node[:openvpn][:dir]}/#{params[:name]}.conf",
             :inet   => params[:inet],
             :inet6  => params[:inet6],
-            :extra_commands => extra_commands
+            :extra_commands => params[:extra_commands]
           })
           source "hostname.tun"
         end
