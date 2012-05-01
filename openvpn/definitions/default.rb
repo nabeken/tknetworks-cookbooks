@@ -63,6 +63,79 @@ define :openvpn_server,
   end
 end
 
+define :openvpn_client,
+       :remote   => nil,
+       :port     => 1194,
+       :proto    => "udp",
+       :dev_type => "tap",
+       :dev      => nil,
+       :ifconfig => nil,
+       :use_tls  => true,
+       :ca       => nil,
+       :cert     => nil,
+       :key      => nil,
+       :routes   => [] do
+  if params[:remote].nil?
+    raise "remote is required"
+  end
+
+  is_key_nil = [:ca, :cert, :key].any? { |n| params[n].nil?  }
+  if params[:use_tls] && is_key_nil
+    raise "ca, cert, key are required."
+  end
+
+  if !params[:use_tls]
+    # retrive secret key from encryped databag
+    ovpn_databag = Chef::EncryptedDataBagItem.load('openvpn', params[:name])
+    secret = "#{node[:openvpn][:dir]}/#{params[:name]}.key"
+    file secret do
+      owner node[:openvpn][:uid]
+      group node[:openvpn][:gid]
+      mode  0600
+      content ovpn_databag["key"]
+      backup false
+    end
+  end
+
+  # retrive a parameter for ifconfig from databag
+  if params[:ifconfig] == :databag
+    ifconfig = data_bag_item('openvpn', 'ifconfig')[node[:fqdn]]
+  else
+    ifconfig = params[:ifconfig]
+  end
+
+  # merge routes from params[:routes] and databag
+  routes = []
+  begin
+    ovpn_routes = data_bag_item('openvpn', 'routes')
+    if ovpn_routes.has_key?(params[:name])
+      routes += params[:routes] + ovpn_routes[params[:name]]
+    end
+  rescue Net::HTTPServerException
+    Chef::Log.info("routes for #{params[:name]} is not found.")
+    routes += params[:routes]
+  end
+
+  begin
+    t = resources("template[#{node[:openvpn][:dir]}/#{params[:name]}-client.conf]")
+  rescue
+    t = template "#{node[:openvpn][:dir]}/#{params[:name]}-client.conf" do
+          owner node[:openvpn][:uid]
+          group node[:openvpn][:gid]
+          mode  0600
+          cookbook "openvpn"
+          variables({
+            :params   => params,
+            :secret   => secret,
+            :ifconfig => ifconfig,
+            :routes   => routes
+          })
+          source "client_openvpn.conf"
+          #notifies :restart, "service[#{node[:openvpn][:service]}]"
+        end
+  end
+end
+
 define :openvpn_interface,
        :inet  => nil,
        :inet6 => nil,
