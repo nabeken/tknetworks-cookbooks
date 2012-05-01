@@ -21,8 +21,9 @@ end
 # generate dh params
 execute "openvpn-generate-dh-params" do
   command "openssl dhparam -out #{node[:openvpn][:ssl][:dh]} " +
-          "#{node[:openvpn][:ssl][:dh_param]}"
+          "#{node[:openvpn][:ssl][:dh_bit]}"
   not_if do
     ::File.exists?(node[:openvpn][:ssl][:dh])
   end
 end
+
