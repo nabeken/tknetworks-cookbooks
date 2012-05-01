@@ -87,7 +87,7 @@ template "/etc/ssh/ssh_known_hosts" do
   source "known_hosts.erb"
   mode 0444
   owner "root"
-  group "root"
+  group node[:etc][:passwd][:root][:gid]
   backup false
   variables :pubkeys => ssh_pubkeys
 end
