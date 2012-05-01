@@ -1,0 +1,9 @@
+up link0
+!/usr/local/sbin/openvpn --daemon --config <%= @config %>
+!sleep 10
+inet <%= @inet %>
+inet6 fe80::1 64
+inet6 <%= @inet6 %>
+<% @extra_commands.each do |cmd| %>
+!<%= cmd %>
+<% end %>
