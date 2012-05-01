@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
+directory node[:openvpn][:dir] do
+  action :create
+end
+
 # generate dh params
 execute "openvpn-generate-dh-params" do
   command "openssl dhparam -out #{node[:openvpn][:ssl][:dh]} " +
