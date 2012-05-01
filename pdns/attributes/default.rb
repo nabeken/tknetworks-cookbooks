@@ -3,6 +3,7 @@ default[:pdns][:db_user]      = "pdns"
 default[:pdns][:db_name]      = "pdns"
 default[:pdns][:db_password]  = ""
 default[:pdns][:axfr_ips]     = []
+default[:pdns][:launch]  = "gpgsql"
 default[:pdns][:bind_inet]  = ""
 default[:pdns][:bind_inet6] = ""
 default[:pdns][:home_dir] = "/home/pdns"
