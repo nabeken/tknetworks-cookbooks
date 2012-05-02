@@ -66,8 +66,5 @@ def write_pkg_scripts
     ::File.open(@new_resource.pkg_scripts_path, "w") { |f|
       f.write @pkgs.join("\n") + "\n"
     }
-    link "/etc/rc.d/#{@new_resource.name}" do
-      to "/etc/rc.d/openvpn"
-    end
   end
 end
