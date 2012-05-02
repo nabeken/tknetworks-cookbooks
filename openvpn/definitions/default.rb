@@ -117,9 +117,9 @@ define :openvpn_client,
   end
 
   begin
-    t = resources("template[#{node[:openvpn][:dir]}/#{params[:name]}-client.conf]")
+    t = resources("template[#{node[:openvpn][:dir]}/#{params[:name]}_client.conf]")
   rescue
-    t = template "#{node[:openvpn][:dir]}/#{params[:name]}-client.conf" do
+    t = template "#{node[:openvpn][:dir]}/#{params[:name]}_client.conf" do
           owner node[:openvpn][:uid]
           group node[:openvpn][:gid]
           mode  0600
