@@ -1,0 +1,15 @@
+#!/bin/sh
+
+daemon="/usr/local/sbin/openvpn"
+
+. /etc/rc.d/rc.subr
+
+VPN=${_name#*_}
+VPNCONF="<%= node[:openvpn][:dir] %>/${VPN}.conf"
+pexp="${daemon} .* --config ${VPNCONF}"
+
+rc_pre() {
+	daemon_flags="${daemon_flags} --daemon --config ${VPNCONF}"
+}
+
+rc_cmd $1

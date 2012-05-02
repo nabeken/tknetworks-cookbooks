@@ -18,6 +18,15 @@ directory node[:openvpn][:dir] do
   action :create
 end
 
+if node[:platform] == "openbsd"
+  template "/etc/rc.d/openvpn" do
+    owner "root"
+    group node[:etc][:passwd][:root][:gid]
+    mode 0555
+    source "openvpn.rc"
+  end
+end
+
 # generate dh params
 execute "openvpn-generate-dh-params" do
   command "openssl dhparam -out #{node[:openvpn][:ssl][:dh]} " +
@@ -26,4 +35,3 @@ execute "openvpn-generate-dh-params" do
     ::File.exists?(node[:openvpn][:ssl][:dh])
   end
 end
-
