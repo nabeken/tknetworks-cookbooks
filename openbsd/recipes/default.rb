@@ -26,11 +26,3 @@ execute "openbsd-add-manip-pkg-script" do
     }
   end
 end
-
-openbsd_pkg_script "openvpn_node_gw_client" do
-  action :enable
-end
-
-openbsd_pkg_script "openvpn_rt_gw_client" do
-  action :enable
-end
