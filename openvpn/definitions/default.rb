@@ -83,6 +83,7 @@ define :openvpn_client,
        :ca        => nil,
        :cert      => nil,
        :key       => nil,
+       :service   => true,
        :routes    => [] do
   if params[:remote].nil?
     raise "remote is required"
@@ -134,10 +135,11 @@ define :openvpn_client,
               end
   end
 
+  config = "#{node[:openvpn][:dir]}/#{params[:name]}_client.conf"
   begin
-    t = resources("template[#{node[:openvpn][:dir]}/#{params[:name]}_client.conf]")
+    t = resources("template[#{config}]")
   rescue
-    t = template "#{node[:openvpn][:dir]}/#{params[:name]}_client.conf" do
+    t = template config do
           owner node[:openvpn][:uid]
           group node[:openvpn][:gid]
           mode  0600
@@ -157,6 +159,40 @@ define :openvpn_client,
     prefix = node[:platform] == "freebsd" ? "/usr/local" : ""
     link "#{prefix}/etc/rc.d/openvpn_#{params[:name]}_client" do
       to "#{prefix}/etc/rc.d/openvpn"
+    end
+  end
+
+  # registering service
+  if params[:service]
+    case node[:platform]
+    when "openbsd"
+      openbsd_pkg_script "openvpn_#{params[:name]}_client" do
+        action [:enable, :start]
+      end
+    when "freebsd"
+      link "#{node[:openvpn][:dir]}/openvpn_#{params[:name]}_client.conf" do
+        to config
+      end
+      execute "openvpn-freebsd-add-#{params[:name]}_client_if" do
+        oneliner = "openvpn_#{params[:name]}_client_if=\"tap\""
+        command "echo '#{oneliner}' >> /etc/rc.conf"
+        not_if do
+          ::File.open("/etc/rc.conf").readlines.any? { |l|
+            l.start_with?(oneliner)
+          }
+        end
+      end
+      service "openvpn_#{params[:name]}_client" do
+        action :enable
+      end
+      service "openvpn_#{params[:name]}_client" do
+        action :start
+        ignore_failure true
+      end
+    else
+      service node[:openvpn][:service] do
+        action [:enable, :start]
+      end
     end
   end
 end
