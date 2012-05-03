@@ -14,17 +14,17 @@
 # limitations under the License.
 #
 define :openvpn_server,
-       :local_ip => nil,
-       :port     => 1194,
-       :proto    => "udp",
-       :dev_type => "tap",
-       :dev      => nil,
-       :use_tls  => true,
-       :ca       => nil,
-       :cert     => nil,
-       :key      => nil do
-  if params[:local_ip].nil? || params[:dev].nil?
-    raise "local_ip and dev are required"
+       :local_ip  => nil,
+       :port      => 1194,
+       :proto     => "udp",
+       :dev_type  => "tap",
+       :dev_index => 0,
+       :use_tls   => true,
+       :ca        => nil,
+       :cert      => nil,
+       :key       => nil do
+  if params[:local_ip].nil? || params[:dev_index].nil?
+    raise "local_ip and dev_index are required"
   end
 
   is_key_nil = [:ca, :cert, :key].any? { |n| params[n].nil?  }
@@ -45,6 +45,13 @@ define :openvpn_server,
     end
   end
 
+  devname = case node[:platform]
+            when "openbsd"
+              "tun#{params[:dev_index]}"
+            else
+              "#{params[:dev_type]}#{params[:dev_index]}"
+            end
+
   begin
     t = resources("template[#{node[:openvpn][:dir]}/#{params[:name]}.conf]")
   rescue
@@ -55,6 +62,7 @@ define :openvpn_server,
           cookbook "openvpn"
           variables({
             :params => params,
+            :dev    => devname,
             :secret => secret
           })
           source "server_openvpn.conf"
@@ -64,17 +72,18 @@ define :openvpn_server,
 end
 
 define :openvpn_client,
-       :remote   => nil,
-       :port     => 1194,
-       :proto    => "udp",
-       :dev_type => "tap",
-       :dev      => nil,
-       :ifconfig => nil,
-       :use_tls  => true,
-       :ca       => nil,
-       :cert     => nil,
-       :key      => nil,
-       :routes   => [] do
+       :remote    => nil,
+       :port      => 1194,
+       :proto     => "udp",
+       :dev_index => nil,
+       :dev_type  => "tap",
+       :dev       => nil,
+       :ifconfig  => nil,
+       :use_tls   => true,
+       :ca        => nil,
+       :cert      => nil,
+       :key       => nil,
+       :routes    => [] do
   if params[:remote].nil?
     raise "remote is required"
   end
@@ -116,6 +125,15 @@ define :openvpn_client,
     routes += params[:routes]
   end
 
+  if !params[:dev_index].nil?
+    devname = case node[:platform]
+              when "openbsd"
+                "tun#{params[:dev_index]}"
+              else
+                "#{params[:dev_type]}#{params[:dev_index]}"
+              end
+  end
+
   begin
     t = resources("template[#{node[:openvpn][:dir]}/#{params[:name]}_client.conf]")
   rescue
@@ -128,6 +146,7 @@ define :openvpn_client,
             :params   => params,
             :secret   => secret,
             :ifconfig => ifconfig,
+            :dev      => devname,
             :routes   => routes
           })
           source "client_openvpn.conf"
