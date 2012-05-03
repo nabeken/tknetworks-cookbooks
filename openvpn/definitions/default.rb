@@ -153,6 +153,12 @@ define :openvpn_client,
           #notifies :restart, "service[#{node[:openvpn][:service]}]"
         end
   end
+  if node[:platform] =~ /^(free|open)bsd/
+    prefix = node[:platform] == "freebsd" ? "/usr/local" : ""
+    link "#{prefix}/etc/rc.d/openvpn_#{params[:name]}_client" do
+      to "#{prefix}/etc/rc.d/openvpn"
+    end
+  end
 end
 
 define :openvpn_interface,
