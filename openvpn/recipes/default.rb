@@ -27,6 +27,13 @@ if node[:platform] == "openbsd"
   end
 end
 
+if node[:platform] != "openbsd"
+  package node[:openvpn][:package] do
+    action :install
+    source "ports" if node[:platform] == "freebsd"
+  end
+end
+
 # generate dh params
 execute "openvpn-generate-dh-params" do
   command "openssl dhparam -out #{node[:openvpn][:ssl][:dh]} " +
