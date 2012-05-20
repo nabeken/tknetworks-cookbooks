@@ -74,7 +74,7 @@ nodes.each do |s|
   end
 end
 
-node[:ssh_known_hosts][:aliases].each do |a|
+node[:ssh][:known_hosts][:aliases].each do |a|
   r.getaddresses(a).each do |addr|
     addr.downcase!
     if addr2keys.has_key?(addr)
