@@ -15,4 +15,4 @@
 #
 
 # must be set via roles
-default[:ssh_known_hosts][:aliases] = []
+default[:ssh][:known_hosts][:aliases] = []
