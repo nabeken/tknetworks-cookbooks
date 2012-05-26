@@ -43,7 +43,6 @@ define :ssh_authorized_keys,
     path    = params[:path]
   end
 
-  t = nil
   directory ::File.dirname(path) do
     action :create
     owner f_owner
@@ -51,8 +50,9 @@ define :ssh_authorized_keys,
     mode  "0700"
   end
 
+  t = nil
   begin
-    t = resource("template[#{path}]")
+    t = resources("template[#{path}]")
   rescue
     t = template path do
           owner f_owner
