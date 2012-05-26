@@ -74,11 +74,21 @@ nodes.each do |s|
   end
 end
 
-node[:ssh][:known_hosts][:aliases].each do |a|
-  r.getaddresses(a).each do |addr|
-    addr.downcase!
-    if addr2keys.has_key?(addr)
-      ssh_pubkeys["#{a},#{addr}"] = addr2keys[addr]
+node[:ssh][:known_hosts][:aliases].each_pair do |from, to|
+  if to.nil?
+    r.getaddresses(from).each do |addr|
+      addr.downcase!
+      if addr2keys.has_key?(addr)
+        ssh_pubkeys["#{from},#{addr}"] = addr2keys[addr]
+      end
+    end
+  else
+    n = nodes.find { |_node| _node.name == to }
+    if n
+      Chef::Log.info("Add alias #{from} as #{to}")
+      ssh_pubkeys["#{from}"] = n['keys']['ssh']['host_rsa_public']
+    else
+      Chef::Log.info("#{to} is not found")
     end
   end
 end
