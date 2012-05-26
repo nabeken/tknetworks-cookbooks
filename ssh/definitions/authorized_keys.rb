@@ -16,20 +16,38 @@
 
 define :ssh_authorized_keys,
        :user    => nil,
+       :path    => nil,
+       :owner   => nil,
+       :group   => nil,
        :options => [],
        :from    => nil,
        :key     => nil do
-  [:user, :key].each do |k|
-    raise "#{k} is required." if params[k].nil?
+  raise "#{k} is required." if params[:key].nil?
+
+  if params[:user].nil? && params[:path].nil?
+    raise "user or path is required"
+  end
+  if params[:path]
+    if params[:owner].nil? || params[:group].nil?
+      raise "owner/group is required with params[:path]"
+    end
+  end
+
+  if !params[:user].nil?
+    f_owner = node[:etc][:passwd][params[:user]][:uid]
+    f_group = node[:etc][:passwd][params[:user]][:gid]
+    path    = "#{node[:etc][:passwd][params[:user].to_sym][:dir]}/.ssh/authorized_keys"
+  else
+    f_owner = params[:owner]
+    f_group = params[:group]
+    path    = params[:path]
   end
 
   t = nil
-  path = "#{node[:etc][:passwd][params[:user].to_sym][:dir]}/.ssh/authorized_keys"
-
   directory ::File.dirname(path) do
     action :create
-    owner node[:etc][:passwd][params[:user]][:uid]
-    group node[:etc][:passwd][params[:user]][:gid]
+    owner f_owner
+    group f_group
     mode  "0700"
   end
 
@@ -37,8 +55,8 @@ define :ssh_authorized_keys,
     t = resource("template[#{path}]")
   rescue
     t = template path do
-          owner node[:etc][:passwd][params[:user]][:uid]
-          group node[:etc][:passwd][params[:user]][:gid]
+          owner f_owner
+          group f_group
           variables :lines => []
           cookbook "ssh"
           source "authorized_keys.erb"
