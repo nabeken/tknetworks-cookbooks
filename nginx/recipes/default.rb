@@ -115,9 +115,11 @@ template "nginx.conf" do
   notifies :restart, "service[nginx]", :delayed
   if node[:nginx][:passenger] == "on"
     if node[:nginx][:passenger_root].respond_to?(:call)
-      variables :passenger_root => node[:nginx][:passenger_root].call
+      variables :passenger_root => node[:nginx][:passenger_root].call,
+                :passenger_ruby => node[:nginx][:passenger_ruby]
     else
-      variables :passenger_root => node[:nginx][:passenger_root]
+      variables :passenger_root => node[:nginx][:passenger_root],
+                :passenger_ruby => node[:nginx][:passenger_ruby]
     end
   end
 end

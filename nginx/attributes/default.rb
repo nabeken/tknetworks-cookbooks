@@ -37,6 +37,7 @@ when "debian","ubuntu"
   default[:nginx][:worker_processes] = cpu[:total]
   default[:nginx][:location][:root_dir] = "/var/www/nginx-default"
   default[:nginx][:passenger_root] = "/usr/lib/phusion-passenger"
+  default[:nginx][:passenger_ruby] = nil
 when "freebsd"
   default[:nginx][:package]    = "www/nginx"
   default[:nginx][:dir]        = "/usr/local/etc/nginx"

@@ -29,6 +29,9 @@ http {
 
   <% if node[:nginx][:passenger] == "on" %>
   passenger_root  <%= @passenger_root %>;
+  <% if @passenger_ruby -%>
+  passenger_ruby <%= @passenger_ruby %>;
+  <% end -%>
   <% end %>
 
   gzip  <%= node[:nginx][:gzip] %>;
