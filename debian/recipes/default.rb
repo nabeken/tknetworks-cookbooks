@@ -34,7 +34,9 @@ end
   strace
   zsh
   less
+  lv
   git-core
+  vim
 }.each do |pkg|
   package pkg do
     action :install
