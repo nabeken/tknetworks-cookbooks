@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_recipe "postgresql::server"
+
+# you must load postgresql recipe via run_list before this recipe
+# include_recipe "postgresql::server"
 
 if node[:platform] == "gentoo"
   portage_keywords node[:pdns][:package] do
