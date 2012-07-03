@@ -21,8 +21,9 @@ execute "openbsd-add-manip-pkg-script" do
   rc = "/etc/rc.conf.local"
   command "echo >> #{rc}; echo \"# DO NOT APPEND ANY LINES BELOW\" >> #{rc}; echo '#{oneliner}' >> #{rc}"
   not_if do
-    ::File.open("/etc/rc.conf.local").readlines.any? { |l|
-      l.start_with?(oneliner)
-    }
+    ::File.exists?("/etc/rc.conf.local") && 
+      ::File.open("/etc/rc.conf.local").readlines.any? { |l|
+        l.start_with?(oneliner)
+      }
   end
 end
