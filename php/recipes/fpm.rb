@@ -15,6 +15,22 @@
 #
 include_recipe "php"
 
+if node[:platform] == "openbsd"
+  template node[:php][:fpm_conf] do
+    source "php-fpm.conf"
+    owner "root"
+    group "wheel"
+    mode  0644
+    notifies :restart, "openbsd_pkg_script[#{node[:php][:fpm_service]}]"
+  end
+  openbsd_pkg_script node[:php][:fpm_service] do
+    action [:enable, :start]
+  end
+end
+
 service node[:php][:fpm_service] do
   action [:enable, :start]
+  not_if do
+    node[:platform] == "openbsd"
+  end
 end

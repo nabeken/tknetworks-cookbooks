@@ -31,6 +31,16 @@ when "debian", "ubuntu"
   default['php']['fpm_service']   = 'php5-fpm'
   default['php']['uid']           = 'root'
   default['php']['gid']           = 'root'
+when "openbsd"
+  default['php']['conf_dir']      = '/etc/php-5.3'
+  default['php']['ext_conf_dir']  = '/etc/php-5.3'
+  default['php']['fpm_conf']      = '/etc/php-fpm.conf'
+  default['php']['fpm_user']      = 'www'
+  default['php']['fpm_group']     = 'www'
+  default['php']['fpm_service']   = 'php_fpm'
+  default['php']['uid']           = 'root'
+  default['php']['gid']           = 'root'
+  default['php']['install_method'] = nil
 when "freebsd"
   default['php']['conf_dir']      = '/usr/local/etc'
   default['php']['fpm_user']      = 'www'
