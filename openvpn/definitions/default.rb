@@ -109,7 +109,7 @@ define :openvpn_client,
 
   # retrive a parameter for ifconfig from databag
   if params[:ifconfig] == :databag
-    ifconfig = data_bag_item('openvpn', 'ifconfig')[node[:fqdn]]
+    ifconfig = data_bag_item('openvpn', "ifconfig_#{params[:name]}")[node[:fqdn]]
   else
     ifconfig = params[:ifconfig]
   end
