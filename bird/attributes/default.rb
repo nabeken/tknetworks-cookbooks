@@ -15,3 +15,6 @@
 #
 default[:bird][:inet][:conf] = "/etc/bird.conf"
 default[:bird][:inet6][:conf] = "/etc/bird6.conf"
+
+default[:bird][:inet][:sock] = "/var/run/bird.ctl"
+default[:bird][:inet6][:sock] = "/var/run/bird6.ctl"

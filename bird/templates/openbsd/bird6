@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# $OpenBSD: $
+
+daemon="/usr/local/sbin/bird6"
+
+. /etc/rc.d/rc.subr
+
+pexp="/usr/local/sbin/bird6 .*"
+
+rc_cmd $1

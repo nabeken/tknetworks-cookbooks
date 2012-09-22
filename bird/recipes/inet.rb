@@ -19,3 +19,18 @@ template node[:bird][:inet][:conf] do
   group node[:etc][:passwd][:root][:gid]
   source "bird.conf"
 end
+
+if node[:platform] == "openbsd"
+  template "/etc/rc.d/bird" do
+    source "bird"
+    mode 0555
+    owner "root"
+    group node[:etc][:passwd][:root][:gid]
+  end
+  openbsd_pkg_script "bird" do
+    action [:enable, :start]
+  end
+  openbsd_rc_conf "bird" do
+    flags " -c /etc/bird.conf -s /var/run/bird.ctl"
+  end
+end
