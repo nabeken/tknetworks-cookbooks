@@ -62,9 +62,9 @@ end
 protected
 
 def write_pkg_scripts
-  if !@pkgs.empty?
-    ::File.open(@new_resource.pkg_scripts_path, "w") { |f|
+  ::File.open(@new_resource.pkg_scripts_path, "w") { |f|
+    if !@pkgs.empty?
       f.write @pkgs.join("\n") + "\n"
-    }
-  end
+    end
+  }
 end
