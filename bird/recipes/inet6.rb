@@ -27,10 +27,10 @@ if node[:platform] == "openbsd"
     owner "root"
     group node[:etc][:passwd][:root][:gid]
   end
-  openbsd_pkg_script "bird6" do
-    action [:enable, :start]
-  end
   openbsd_rc_conf "bird6" do
     flags " -c /etc/bird6.conf -s /var/run/bird6.ctl"
+  end
+  openbsd_pkg_script "bird6" do
+    action [:enable, :start]
   end
 end
