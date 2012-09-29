@@ -19,3 +19,4 @@ attribute :name, :kind_of => String, :name_attribute => true
 attribute :value, :kind_of => [String, Integer, Float]
 attribute :comment, :kind_of => String, :default => nil
 attribute :sysctl_conf_path, :kind_of => String, :default => "/etc/sysctl.conf"
+attribute :immediately, :kind_of => [TrueClass, FalseClass], :default => true

@@ -28,6 +28,7 @@ action :enable do
   else
     Chef::Log.info("#{@new_resource.name} is already enabled")
   end
+  set_value_immediately if @new_resource.immediately
 end
 
 action :disable do
@@ -78,5 +79,14 @@ def validate_sysctl_key
     false
   else
     result.status.success?
+  end
+end
+
+def set_value_immediately
+  Chef::Log.info "set value #{@new_resource.name}=#{@new_resource.value}."
+  begin
+    shell_out!("sysctl #{@new_resource.name}=#{@new_resource.value}", :env => nil)
+  rescue => e
+    raise "failed to set value #{@new_resource.name}=#{@new_resource.value}. #{e}"
   end
 end
