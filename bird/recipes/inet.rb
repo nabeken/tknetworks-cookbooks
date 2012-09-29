@@ -21,6 +21,10 @@ template node[:bird][:inet][:conf] do
 end
 
 if node[:platform] == "openbsd"
+  sysctl "net.inet.ip.forwarding" do
+    value 1
+    comment "Permit forwarding (routing) of IPv4 packets"
+  end
   template "/etc/rc.d/bird" do
     source "bird"
     mode 0555

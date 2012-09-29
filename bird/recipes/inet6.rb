@@ -21,6 +21,10 @@ template node[:bird][:inet6][:conf] do
 end
 
 if node[:platform] == "openbsd"
+  sysctl "net.inet6.ip6.forwarding" do
+    value 1
+    comment "Permit forwarding (routing) of IPv6 packets"
+  end
   template "/etc/rc.d/bird6" do
     source "bird6"
     mode 0555
