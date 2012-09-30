@@ -39,3 +39,10 @@ execute "openbsd-add-manip-rc-local-chef" do
       }
   end
 end
+
+# disable inetd, sndiod by default
+%w{inetd sndiod}.each do |s|
+  openbsd_rc_conf s do
+    flags "NO"
+  end
+end
