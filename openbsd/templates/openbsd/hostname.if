@@ -4,15 +4,19 @@ rdomain <%= @rdomain %>
 <%- if @tunneldomain != 0 %>
 tunneldomain <%= @tunneldomain %>
 <%- end %>
+<%- if @tunnel %>
+tunnel <%= @tunnel %>
+<%- end %>
 <%- if @dhcp %>
 dhcp
-<%- else %>
-<%- if @inet %>
+<%- elsif @inet %>
 inet <%= @inet %>
 <%- end %>
 <%- if @inet6 %>
 inet6 <%= @inet6 %>
 <%- end %>
+<%- if @inner %>
+<%= @inner %>
 <%- end %>
 <% @extra_commands.each do |cmd| %>
 !<%= cmd %>

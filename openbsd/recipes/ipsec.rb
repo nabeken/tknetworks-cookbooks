@@ -13,13 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+require 'chef/mixin/shell_out'
 
-include_recipe "openbsd::pf"
+execute "reload-ipsec-conf" do
+  extend Chef::Mixin::ShellOut
+  command "/sbin/ipsecctl -f /etc/ipsec.conf"
+  action :nothing
+  only_if do
+    shell_out("/usr/bin/pgrep isakmpd", :env => nil).status.success?
+  end
+end
 
-template "/etc/pf_ipsec.conf" do
+template "/etc/ipsec.conf" do
+  source "ipsec.conf"
+  mode 0600
   owner "root"
   group node[:etc][:passwd][:root][:gid]
-  mode 0600
-  source "pf_ipsec.conf"
-  notifies :run, "execute[pfctl-reload]"
+  notifies :run, "execute[reload-ipsec-conf]"
 end
