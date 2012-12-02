@@ -1,0 +1,4 @@
+<%- if @rdomain != 0 %>
+rdomain <%= @rdomain %>
+<%- end %>
+up

@@ -24,12 +24,3 @@ template "/etc/pf_ipsec.conf" do
   source "pf_ipsec_responder.conf"
   notifies :run, "execute[pfctl-reload]"
 end
-
-#
-#openbsd_rc_conf "isakmpd" do
-#  flags " -K"
-#end
-#
-#openbsd_pkg_script "isakmpd" do
-#  action [:enable, :start]
-#end

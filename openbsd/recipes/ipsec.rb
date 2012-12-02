@@ -15,13 +15,10 @@
 #
 require 'chef/mixin/shell_out'
 
-execute "reload-ipsec-conf" do
-  extend Chef::Mixin::ShellOut
-  command "/sbin/ipsecctl -f /etc/ipsec.conf"
-  action :nothing
-  only_if do
-    shell_out("/usr/bin/pgrep isakmpd", :env => nil).status.success?
-  end
+sysctl "net.inet.gre.allow" do
+  value 1
+  comment "Enable GRE"
+  immediately true
 end
 
 template "/etc/ipsec.conf" do

@@ -94,9 +94,26 @@ define :openbsd_ike,
             :rules => []
           )
           source "ipsec_chef.conf"
+          notifies :run, "execute[reload-ipsec-conf]"
         end
   end
   t.variables[:rules].push params
+end
+
+define :openbsd_reload_ipsec_conf, :rdomain => 0 do
+  rdomain = params[:rdomain]
+  execute params[:name] do
+    extend Chef::Mixin::ShellOut
+    if rdomain == 0
+      command "/sbin/ipsecctl -f /etc/ipsec.conf"
+    else
+      command "/sbin/route -T #{rdomain} exec /sbin/ipsecctl -f /etc/ipsec.conf"
+    end
+    action :nothing
+    only_if do
+      shell_out("/usr/bin/pgrep isakmpd", :env => nil).status.success?
+    end
+  end
 end
 
 define :openbsd_ipsec do
@@ -130,6 +147,11 @@ define :openbsd_ipsec do
 
       ipsec_mode = params[:name]
       mypeer = params[:peer]
+
+      openbsd_reload_ipsec_conf "reload-ipsec-conf" do
+        rdomain my.last["rdomain"] if my.last["rdomain"]
+      end
+
       openbsd_interface my_lo.first do
         rdomain my.last["rdomain"] if has_rdomain
         inet "#{my_lo.last}/32"
@@ -146,6 +168,25 @@ define :openbsd_ipsec do
         to    "#{remote_lo.last}/32"
         psk   node[:openbsd][:ipsec][:psk]
         peer  mypeer
+      end
+
+      if has_rdomain
+        enc_if = get_enc(my.last)
+        openbsd_interface enc_if.first do
+          rdomain my.last["rdomain"]
+        end
+        Chef::Log.info("rdomain is enabled. executing isakmpd w/ rdomain in rc is up to you.")
+      else
+        openbsd_rc_conf "isakmpd" do
+          flags "-K -v"
+        end
+        openbsd_rc_conf "ipsec" do
+          flags "YES"
+          no_suffix true
+        end
+        openbsd_pkg_script "isakmpd" do
+          action [:enable, :start]
+        end
       end
     end
   rescue => e

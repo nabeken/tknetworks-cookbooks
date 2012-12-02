@@ -15,7 +15,7 @@
 #
 
 action :enable do
-  if @is_absent
+  if @is_absent || @is_modified
     # Add
     @flags[@new_resource.name] = @new_resource.flags
     # write
@@ -46,13 +46,20 @@ def load_current_resource
   @flags = {}
   if ::File.exists?(@new_resource.rc_conf_local_chef_path)
     ::File.open(@new_resource.rc_conf_local_chef_path).each_line do |l|
-      if l.strip =~ /^(.*)_flags="(.*)"$/
+      if @new_resource.no_suffix
+        regexp = /^(.*)="(.*)"$/
+      else
+        regexp = /^(.*)_flags="(.*)"$/
+      end
+      if l.strip =~ regexp
         @flags[$1] = $2
       end
     end
   end
   @is_absent = !@flags.has_key?(@new_resource.name)
-  Chef::Log.info "openbsd_rc_conf: is_absent? #{@is_absent}, #{@flags}"
+  @is_modified = @new_resource.flags != @flags[@new_resource.name]
+  Chef::Log.info "openbsd_rc_conf[#{@new_resource.name}]: is_absent? #{@is_absent}, #{@flags}"
+  Chef::Log.info "openbsd_rc_conf[#{@new_resource.name}]: is_modified? #{@is_absent}, #{@flags}"
   @current_resource
 end
 
@@ -62,7 +69,12 @@ def write_rc_conf_local_chef
   # 空の場合は空ファイルにする
   ::File.open(@new_resource.rc_conf_local_chef_path, "w") { |f|
     @flags.sort.each { |p, flag|
-      f.puts %Q[#{p}_flags="#{flag}"]
+      if @new_resource.no_suffix
+        str = %Q[#{p}="#{flag}"]
+      else
+        str = %Q[#{p}_flags="#{flag}"]
+      end
+      f.puts str
     }
   }
 end

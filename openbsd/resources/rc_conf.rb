@@ -18,4 +18,5 @@ actions :enable, :disable
 default_action :enable
 attribute :name, :kind_of => String, :name_attribute => true
 attribute :flags, :kind_of => String
+attribute :no_suffix, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :rc_conf_local_chef_path, :kind_of => String, :default => "/etc/rc.conf.local.chef"
