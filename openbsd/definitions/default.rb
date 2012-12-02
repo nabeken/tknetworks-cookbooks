@@ -20,6 +20,7 @@ define :openbsd_interface,
        :dhcp    => false,
        :tunnel  => nil,
        :inner   => nil,
+       :config  => nil,
        :rdomain => 0,
        :tunneldomain => 0,
        :extra_commands => [] do
@@ -29,7 +30,7 @@ define :openbsd_interface,
     raise "openvpn_interface is only for OpenBSD"
   end
 
-  if (not params[:name] =~ /^gre/) && params[:inet].nil? && params[:inet6].nil?
+  if (not params[:name] =~ /^(gre|enc)/) && params[:inet].nil? && params[:inet6].nil?
     raise "ipv4 or ipv6 address required"
   end
 
@@ -51,10 +52,16 @@ define :openbsd_interface,
             :inner  => params[:inner],
             :rdomain => params[:rdomain],
             :tunnel  => params[:tunnel],
+            :config  => params[:config],
             :tunneldomain   => params[:tunneldomain],
             :extra_commands => params[:extra_commands]
           })
-          source "hostname.if"
+          source case params[:name]
+                 when /^enc/
+                   "hostname.enc.if"
+                 else
+                   "hostname.if"
+                 end
         end
   end
 end
