@@ -1,7 +1,9 @@
 TKNETWORKS-COOKBOOKS
 --------------------
 
-Welcome :-)
+THIS REPOSITORY IS NO LONGER MAINTAINED.
+
+l have migrated some cookbooks to <https://github.com/tknetworks-cookbooks/> with adding spec/test.
 
 COOKBOOKS
 =========
